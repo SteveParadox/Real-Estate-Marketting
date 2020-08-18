@@ -1,0 +1,365 @@
+{%extends 'layout.html'%}
+{% block content%}
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Wrapper Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <span class="icon_close"></span>
+        </div>
+        <div class="logo">
+            <a  href="{{ url_for('main.home') }}">
+
+                  <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
+            </a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="om-widget">
+
+               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+        </div>
+        <div class="om-social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu Wrapper End -->
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="hs-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="logo">
+                            <a  href="{{ url_for('main.home') }}">
+                                 <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="ht-widget">
+
+                               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-open">
+                    <span class="icon_menu"></span>
+                </div>
+            </div>
+        </div>
+        <div class="hs-nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <nav class="nav-menu">
+                            <ul>
+                                <li><a  href="{{ url_for('main.home') }}">Home</a></li>
+                                <li class="active"><a href="#">Properties</a>
+                                    <ul class="dropdown">
+
+                                        <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
+
+                                        <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
+                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
+                                    </ul>
+                                </li>
+                                     <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                <li><a href="./blog.html">Blog</a></li>
+                                <li><a href="./contact.html">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hn-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section spad set-bg" data-setbg="static/img/breadcrumb-bg.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h4>Property Submit</h4>
+                        <div class="bt-option">
+                            <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
+                            <span>Property</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Property Submit Section Begin -->
+    <section class="property-submit-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="property-submit-form">
+                         <form method="POST" action="" enctype="multipart/form-data" >
+                                {{ form.hidden_tag() }}
+                             <fieldset>
+                                 <div class="pf-title">
+                                <h4>First  Name</h4>
+
+                                {{ form.agent_first_name (type="text", placeholder="First Name*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Last Name</h4>
+
+                                {{ form.agent_last_name (type="text", placeholder="Last Name*")}}
+                                     <br>
+                                     <br>
+                                      <h4>Gender</h4>
+                                     {{form.gender}}
+                                     <br>
+                                     <br>
+                                     <br>
+                                     <h4>Email</h4>
+
+                                {{ form.agent_email (type="email", placeholder="Email address*")}}
+                                     <br>
+                                     <br>
+                                      <h4>Phone Number</h4>
+
+                                {{ form.agent_phone_no (type="text", placeholder="Phone Number*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Agent/Owner Image</h4>
+
+                                    {{ form.agent_photo(class="") }}
+
+                      {{ form.agent_photo.label() }}
+
+                            </div>
+                            <div class="pf-title">
+                                <h4>Apartment Name</h4>
+
+                                {{ form.apartment_name (type="text", placeholder="Apartment Name*")}}
+                            </div>
+                            <div class="pf-summernote">
+                                <h4>Description</h4>
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link texteditor-switch" data-toggle="tab" href="#tabs-1" role="tab">Text</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link texteditor-switch active" data-toggle="tab" href="#tabs-2" role="tab">Visual</a>
+                                    </li>
+                                </ul>
+
+                                {{form.description (class="texteditor-content")}}
+                            </div>
+                            <div class="pf-location">
+                                <h4>Property Location</h4>
+                                <div class="location-inputs">
+
+                                    {{ form.location (placeholder="Address*", type="text")}}
+                                    {{ form.neighborhood (placeholder="Neighborhood*", type="text")}}
+                                    {{ form.city (placeholder="City*", type="text")}}
+                                    <!--<input type="text" placeholder="State">-->
+                                    {{ form.country (placeholder="Country*", type="text")}}
+                                    {{ form.postal_code (placeholder="Posta Code / Zip*", type="text")}}
+
+                                </div>
+                            </div>
+                            <div class="pf-map">
+                                <h4>Google Map</h4>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="map-inputs">
+                                            <input type="text" placeholder="Latitude">
+                                            <input type="text" placeholder="Longitude">
+                                            <input type="text" placeholder="Street View">
+                                        </div>
+                                        <button type="button" class="site-btn">PPlace the pin the address above</button>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="g-map">
+                                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d735515.5813275519!2d-80.41163541934742!3d43.93644386501528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882a55bbf3de23d7%3A0x3ada5af229b47375!2sMono%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sbd!4v1583262687289!5m2!1sen!2sbd" height="245" style="border:0;" allowfullscreen=""></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pf-type">
+                                <h4>Property type</h4>
+                                <div class="status-item">
+                                     {{form.property_type}}
+                                </div>
+                            </div>
+                             <br>
+                             <br>
+                            <div class="pf-status">
+                                <h4>Property status</h4>
+                                <div class="status-item">
+                                    {{form.property_status}}
+                                </div>
+                            </div>
+                             <br>
+                             <br>
+                            <div class="pf-feature-price">
+                                <h4>Featured Price</h4>
+                                <div class="fp-inputs">
+                                    {{ form.price (type="text", placeholder="Price*")}}
+                                    {{ form.second_price (type="text", placeholder="Second Price ( Optional )")}}
+                                    <input type="text" placeholder="After Price Label (ex: monthly)">
+                                </div>
+                            </div>
+                            <div class="pf-feature">
+                                <h4>Property Features</h4>
+                                <div class="features-list">
+                                    <div class="feature-item">
+                                        <label for="air">Air conditioning
+                                            <input type="checkbox" id="air">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="lundry">Laundry
+                                            <input type="checkbox" id="lundry">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="refrigerator">Refrigerator
+                                            <input type="checkbox" id="refrigerator">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="washer">Washer
+                                            <input type="checkbox" id="washer">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div class="feature-item">
+                                        <label for="barbeque">Barbeque
+                                            <input type="checkbox" id="barbeque">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="lawn">Lawn
+                                            <input type="checkbox" id="lawn">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="sauna">Sauna
+                                            <input type="checkbox" id="sauna">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="wifi">Wifi
+                                            <input type="checkbox" id="wifi">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div class="feature-item">
+                                        <label for="dryer">Dryer
+                                            <input type="checkbox" id="dryer">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="microwave">Microwave
+                                            <input type="checkbox" id="microwave">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="pool">Swimming Pool
+                                            <input type="checkbox" id="pool">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="window">Window Coverings
+                                            <input type="checkbox" id="window">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div class="feature-item">
+                                        <label for="gym">Gym
+                                            <input type="checkbox" id="gym">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="shower">OutdoorShower
+                                            <input type="checkbox" id="shower">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="tv">Tv Cable
+                                            <input type="checkbox" id="tv">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                        <label for="villa">Villa
+                                            <input type="checkbox" id="villa">
+                                            <span class="checkbox"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pf-feature-image">
+                                <h4>Property Images</h4>
+
+                                    {{ form.photo(class="") }}
+
+                      {{ form.photo.label() }}
+
+
+
+                                    {{ form.photo1(class="") }}
+
+                      {{ form.photo1.label() }}
+
+
+
+                                    {{ form.photo2(class="") }}
+
+                      {{ form.photo2.label() }}
+
+                            </div>
+                                   <div class="pf-feature-image">
+                                <h4>Floor Plan Image</h4>
+
+                                    {{ form.front_plan(class="") }}
+
+                      {{ form.front_plan.label() }}
+                                   </div>
+                            <div class="pf-property-details">
+                                <h4>Property details</h4>
+                                <div class="property-details-inputs">
+
+                                    {{ form.property_id (type="number", placeholder="Property ID*")}}
+                                    {{ form.area_size (type="number", placeholder="Area Size ( Only digits )*")}}
+
+                                    <input type="text" placeholder="Size Prefix">
+
+
+                                    {{ form.no_of_bedrooms (type="number", placeholder="Bedrooms*")}}
+                                    {{ form.no_of_bathrooms (type="number", placeholder="Bathrooms*")}}
+                                    {{ form.no_of_garages (type="number", placeholder="Garages*")}}
+
+                                    <input type="text" placeholder="Garages Size">
+                                    {{ form.year_built (type="date", placeholder="Year Built*")}}
+                                   {{ form.video_tour (type="text", placeholder="Virtual Tour Video Url")}}
+
+                                </div>
+                            </div>
+                             </fieldset>
+
+                                {{ form.submit(class="site-btn")}}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Property Submit Section End -->
+
+{%endblock content%}

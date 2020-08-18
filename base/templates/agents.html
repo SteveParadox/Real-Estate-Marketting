@@ -1,0 +1,170 @@
+{%extends 'layout.html'%}
+{% block content%}
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Wrapper Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <span class="icon_close"></span>
+        </div>
+        <div class="logo">
+           <a  href="{{ url_for('main.home') }}">
+
+                  <img src="{{ url_for('static', filename='img/logo.png') }}">
+            </a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="om-widget">
+
+               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+        </div>
+        <div class="om-social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu Wrapper End -->
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="hs-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="logo">
+                            <a  href="{{ url_for('main.home') }}">
+                            <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="ht-widget">
+
+                               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-open">
+                    <span class="icon_menu"></span>
+                </div>
+            </div>
+        </div>
+        <div class="hs-nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <nav class="nav-menu">
+                            <ul>
+                                <li><a  href="{{ url_for('main.home') }}">Home</a></li>
+                                <li><a href="#">Properties</a>
+                                    <ul class="dropdown">
+                                        <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
+
+                                          <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
+                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
+                                    </ul>
+                                </li>
+                                     <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                <li><a href="./blog.html">Blog</a></li>
+                                <li><a href="./contact.html">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hn-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section spad set-bg" data-setbg="static/img/breadcrumb-bg.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h4>Owners/Agents</h4>
+                        <div class="bt-option">
+                            <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
+                            <span>Agents</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Agent Section Begin -->
+    <section class="agent-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="agent-search-form">
+                        <form action="#">
+                            <input type="text" placeholder="Find agent">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="as-slider owl-carousel">
+                     {%for agt in agent.items%}
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="as-item">
+                            <div class="as-pic">
+
+                                <img src="{{ url_for('static', filename='img/agents/agent-1.jpg') }}">
+                                <div class="rating-point">
+                                    4.5
+                                </div>
+                            </div>
+                            <div class="as-text">
+                                <div class="at-title">
+                                    <h6>{{agt.first_name}} {{agt.last_name}}</h6>
+                                    <div class="rating-star">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>Property <span>{{agt.total}}</span></li>
+                                    <li>Email <span>{{agt.email}}</span></li>
+                                    <li>Phone <span>{{agt.phone_no}}</span></li>
+                                </ul>
+                                <a  href="{{ url_for('agent.profile', agent_name=agt.first_name, agent_last_name=agt.last_name) }}">View profile</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Agent Section End -->
+
+  {%endblock content%}

@@ -1,0 +1,249 @@
+{%extends 'layout.html'%}
+{% block content%}
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Wrapper Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <span class="icon_close"></span>
+        </div>
+        <div class="logo">
+           <a  href="{{ url_for('main.home') }}">
+
+                  <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
+            </a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="om-widget">
+
+               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+        </div>
+        <div class="om-social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu Wrapper End -->
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="hs-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="logo">
+                            <a  href="{{ url_for('main.home') }}">
+                             <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="ht-widget">
+
+                             <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-open">
+                    <span class="icon_menu"></span>
+                </div>
+            </div>
+        </div>
+        <div class="hs-nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <nav class="nav-menu">
+                            <ul>
+                                <li><a  href="{{ url_for('main.home') }}">Home</a></li>
+                                <li class="active"><a href="#">Properties</a>
+                                    <ul class="dropdown">
+                                        <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
+
+                                               <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
+                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
+                                    </ul>
+                                </li>
+                                    <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                <li><a href="./blog.html">Blog</a></li>
+                                <li><a href="./contact.html">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="hn-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section spad set-bg" data-setbg="img/breadcrumb-bg.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h4>Property comparison</h4>
+                        <div class="bt-option">
+                            <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
+                            <span>Property</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Property Comparison Section Begin -->
+    <div class="property-comparison-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 p-0">
+                    <div class="pc-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="type">Type</th>
+                                    <th class="compare-item middle-item">
+                                        <div class="title">Villa</div>
+
+                                    <img alt="" src="{{ url_for('static', filename='img/property/comparison/comparison-1.jpg') }}">
+                                        <div>Unimont Aurum</div>
+                                        <p><span class="icon_pin_alt"></span> Badlapur East, Beyond Thane</p>
+                                    </th>
+                                    <th class="compare-item right-item">
+                                        <div class="title">Apartment</div>
+            <img alt="" src="{{ url_for('static', filename='img/property/comparison/comparison-2.jpg') }}">
+                                        <div>GoldCrest Residency</div>
+                                        <p><span class="icon_pin_alt"></span> 12 Pt at Shedung, Panvel, Raigarh, Navi Mumbai</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-type">Status</td>
+                                    <td>Rent</td>
+                                    <td>Rent</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Size</td>
+                                    <td>520 sq ft</td>
+                                    <td>450 sq ft</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Rooms</td>
+                                    <td>8</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Bedroom</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Garages</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Air conditioning</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Garages</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Air conditioning</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Garages</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Air conditioning</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Balcony</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Built-in kitchen</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Dryer</td>
+                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Fireplace</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Fully furnished</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Gym</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Heating</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Pool</td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Storage</td>
+                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Washer</td>
+                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Property Comparison Section End -->
+
+{%endblock content%}
