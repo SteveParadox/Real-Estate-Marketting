@@ -1,19 +1,13 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import DataRequired, FileAllowed
-from wtforms import FileField, TextAreaField
+from wtforms import FileField, TextAreaField, PasswordField
 from wtforms.fields import SubmitField, StringField, DateField, IntegerField, RadioField, SelectField
 from wtforms.fields.html5 import URLField
+from wtforms.validators import EqualTo
 
 
 class ApartmentForm(FlaskForm):
-    agent_first_name = StringField(validators=[DataRequired()])
-    agent_last_name = StringField(validators=[DataRequired()])
-    agent_email = StringField(validators=[DataRequired()])
-    agent_phone_no = StringField(validators=[DataRequired()])
     apartment_name = StringField(validators=[DataRequired()])
-    gender = SelectField(choices=[('male', "Male"), ("female", "Female")],
-                                  validators=[DataRequired()])
-    agent_photo = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     description = TextAreaField(validators=[DataRequired()])
     country = StringField(validators=[DataRequired()])
     city = StringField(validators=[DataRequired()])
@@ -39,3 +33,8 @@ class ApartmentForm(FlaskForm):
     price = IntegerField(validators=[DataRequired()])
     second_price = IntegerField(validators=[DataRequired()])
     submit = SubmitField('Submit Property')
+
+
+class LoginForm(FlaskForm):
+    agent_email = StringField(validators=[DataRequired()])
+    agent_password = PasswordField(validators=[DataRequired()])

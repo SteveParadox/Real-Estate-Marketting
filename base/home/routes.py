@@ -2,11 +2,12 @@ import datetime
 
 import shortuuid
 from flask import *
+from flask_login import login_required, current_user
 
 from base import db
 from base.home.forms import ApartmentForm
 from base.home.utils import save_img
-from base.models import Apartment, Agent, AgentSchema
+from base.models import Apartment, Agent, AgentSchema, ApartmentSchema
 import random
 
 main = Blueprint('main', __name__)
@@ -15,22 +16,27 @@ main = Blueprint('main', __name__)
 @main.route('/search', methods=['POST'])
 def search():
     data = request.form.get('text')
-    data1 = request.form.get('text1')
-    data2 = request.form.get('text2')
-    sea = Apartment.query.all()
-    search = Apartment.query.filter(Apartment.city == data).all()
-    search2 = Apartment.query.filter(Apartment.no_of_bedrooms == data).all()
-    search3 = Apartment.query.filter(Apartment.no_of_bathrooms == data).all()
-    if data in sea and data1 in sea and data2 in sea:
-        agent_schema = AgentSchema(many=True)
-        res = agent_schema.dump(data)
-        return jsonify(res)
-    agent_schema = AgentSchema(many=True)
-    res = agent_schema.dump(search)
-    res2 = agent_schema.dump(search2)
-    res3 = agent_schema.dump(search3)
-    return jsonify(res, res2, res3)
+    data2 = request.form.get('text1')
+    data3 = request.form.get('text2')
+    search = Apartment.query.filter_by(city = data).all()
+    if search :
+        search = Apartment.query.filter_by(city=data).all()
+        if search:
+            search = Apartment.query.filter_by(no_of_bedrooms=data2).all()
+            if search:
+                search = Apartment.query.filter_by(no_of_bathrooms=data3).all()
 
+    agent_schema = ApartmentSchema(many=True)
+    res = agent_schema.dump(search)
+    return jsonify(res)
+
+@main.route('/property/detail/love/<string:public_id>', methods=['POST'])
+def add_rate(public_id):
+    data = request.form.get('text')
+    apartment = Apartment.query.filter_by(public_id=public_id).first()
+    apartment.love=apartment.love + ((int(data)*0)+1)
+    db.session.commit()
+    return jsonify(apartment.love)
 
 @main.route('/')
 def home():
@@ -119,11 +125,37 @@ def property_details(public_id):
 
     return render_template('property-details.html', apartment=apartment)
 
+@main.route('/search/apartment', methods=['POST'])
+def apartment_search():
+    data = request.form.get('text')
+    apartment= Apartment.query.filter_by(apartment_name=data).all()
+    if not apartment:
+        apartment = Apartment.query.filter_by(city=data).all()
+        if not apartment:
+            apartment = Apartment.query.filter_by(location=data).all()
+            if not apartment:
+                apartment = Apartment.query.filter_by(neighbourhood=data).all()
+                if not apartment:
+                    apartment = Apartment.query.filter_by(postal_code=data).all()
+                    if not apartment:
+                        apartment = Apartment.query.filter_by(property_type=data).all()
+                        if not apartment:
+                            apartment = Apartment.query.filter_by(property_status=data).all()
+                            if not apartment:
+                                apartment = Apartment.query.filter_by(no_of_bedrooms=data).all()
+                                if not apartment:
+                                    apartment = Apartment.query.filter_by(no_of_bathrooms=data).all()
+                                    if not apartment:
+                                        apartment = Apartment.query.filter_by(no_of_garages=data).all()
+    apartment_schema = ApartmentSchema(many=True)
+    res = apartment_schema.dump(apartment)
+    return jsonify(res)
+
 
 @main.route('/property/submit', methods=['GET', 'POST'])
+@login_required
 def property_submit():
     form = ApartmentForm()
-
     if form.validate_on_submit():
         photo_file = save_img(form.photo.data)
         file = request.files['photo']
@@ -133,18 +165,8 @@ def property_submit():
         file2 = request.files['photo1']
         photo_file3 = save_img(form.front_plan.data)
         file3 = request.files['front_plan']
-        photo_file4 = save_img(form.agent_photo.data)
-        file4 = request.files['agent_photo']
         agent = Agent()
-        agent.first_name = form.agent_first_name.data
-        agent.last_name = form.agent_last_name.data
-        agent.country = form.country.data
-        agent.email = form.agent_email.data
-        agent.gender = form.gender.data
-        agent.phone_no = form.agent_phone_no.data
-        agent.agent_image_file = photo_file4
-        agent.agent_photo_data = file4.read()
-        apartment = Apartment(broker=agent)
+        apartment = Apartment(broker=current_user)
         apartment.image_file = photo_file
         apartment.photo_data2 = file.read()
         apartment.image_file2 = photo_file1
@@ -172,9 +194,7 @@ def property_submit():
         apartment.area_size = form.area_size.data
         apartment.price = form.price.data
         apartment.second_price = form.second_price.data
-
         db.session.add(apartment)
-        db.session.add(agent)
         db.session.commit()
         return redirect(url_for('main.home'))
     return render_template('property-submit.html', form=form)
