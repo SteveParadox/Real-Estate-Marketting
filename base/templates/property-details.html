@@ -60,6 +60,10 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
+                            {% if current_user.is_authenticated%}
+
+                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
+                            {% endif %}
                             <ul>
                                 <li><a  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li class="active"><a href="#">Properties</a>
@@ -71,7 +75,10 @@
                                     </ul>
                                 </li>
                                     <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
-                                <li><a href="./blog.html">Blog</a></li>
+                             {% if not current_user.is_authenticated%}
+                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
+                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
+                                {%endif%}    <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
                             </ul>
                         </nav>
@@ -100,14 +107,14 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-12 p-0">
-                                    <div class="ps-item-inner large-item set-bg" data-setbg="img/property/slider/ps-1.jpg"></div>
+                                    <div class="ps-item-inner large-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file) }}"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file2) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
                                     <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
@@ -129,14 +136,14 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-12 p-0">
-                                    <div class="ps-item-inner large-item set-bg" data-setbg="img/property/slider/ps-1.jpg"></div>
+                                    <div class="ps-item-inner large-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file2) }}"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file3) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
                                     <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
@@ -171,12 +178,33 @@
                                 <div class="pd-social">
                                     <a href="#"><i class="fa fa-mail-forward"></i></a>
                                     <a href="#"><i class="fa fa-send"></i></a>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-mail-forward"></i></a>
+                                    <span id="count">{{apartment.love}}</span>
+                                    <a id="target"> <i  class="fa fa-heart"></i></a>
+
                                     <a href="#"><i class="fa fa-cloud-download"></i></a>
                                 </div>
                             </div>
                         </div>
+                                              <script src="{{ url_for('static', filename='ajax.js') }}"></script>
+ <script>
+      $(document).ready(function(){
+$( "#target" ).on('click',function(){
+$('#count').html(function(i, val) {
+{ return val*1+1 }
+});
+    text=$("#count").html();
+
+  $.ajax({
+                method: "post",
+                url: '/property/detail/love/{{apartment.public_id}}',
+                data: {text: text},
+                success: function(res){
+                console.log(res);
+                }
+                });
+                 });
+});
+                </script>
                         <div class="pd-board">
                             <div class="tab-board">
                                 <ul class="nav nav-tabs" role="tablist">
@@ -314,7 +342,7 @@
                         <div class="pd-widget">
                             <h4>Floor plans</h4>
 
-                            <img alt="" src="{{ url_for('static', filename='img/property/details/floor-plan.jpg') }}">
+                            <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + apartment.floor_plan_file) }}">
                         </div>
                         <div class="pd-widget">
                             <h4>Floor plans</h4>
@@ -363,7 +391,7 @@
                             <div class="pd-agent">
                                 <div class="agent-pic">
 
-                                      <img alt="" src="{{ url_for('static', filename='img/property/details/agent.jpg') }}">
+                                      <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + apartment.broker.agent_image_file) }}">
                                 </div>
                                 <div class="agent-text">
                                     <div class="at-title">

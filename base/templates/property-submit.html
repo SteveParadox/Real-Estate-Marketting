@@ -61,6 +61,10 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
+                            {% if current_user.is_authenticated%}
+
+                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
+                            {% endif %}
                             <ul>
                                 <li><a  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li class="active"><a href="#">Properties</a>
@@ -73,6 +77,10 @@
                                     </ul>
                                 </li>
                                      <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                   {% if not current_user.is_authenticated%}
+                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
+                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
+                                {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
                             </ul>
@@ -120,39 +128,7 @@
                          <form method="POST" action="" enctype="multipart/form-data" >
                                 {{ form.hidden_tag() }}
                              <fieldset>
-                                 <div class="pf-title">
-                                <h4>First  Name</h4>
 
-                                {{ form.agent_first_name (type="text", placeholder="First Name*")}}
-                                     <br>
-                                     <br>
-                                     <h4>Last Name</h4>
-
-                                {{ form.agent_last_name (type="text", placeholder="Last Name*")}}
-                                     <br>
-                                     <br>
-                                      <h4>Gender</h4>
-                                     {{form.gender}}
-                                     <br>
-                                     <br>
-                                     <br>
-                                     <h4>Email</h4>
-
-                                {{ form.agent_email (type="email", placeholder="Email address*")}}
-                                     <br>
-                                     <br>
-                                      <h4>Phone Number</h4>
-
-                                {{ form.agent_phone_no (type="text", placeholder="Phone Number*")}}
-                                     <br>
-                                     <br>
-                                     <h4>Agent/Owner Image</h4>
-
-                                    {{ form.agent_photo(class="") }}
-
-                      {{ form.agent_photo.label() }}
-
-                            </div>
                             <div class="pf-title">
                                 <h4>Apartment Name</h4>
 

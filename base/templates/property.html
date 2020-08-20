@@ -61,6 +61,10 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
+                            {% if current_user.is_authenticated%}
+
+                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
+                            {% endif %}
                             <ul>
                                 <li><a  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li class="active"><a href="#">Properties</a>
@@ -72,7 +76,11 @@
                                     </ul>
                                 </li>
                                 <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                {% if not current_user.is_authenticated%}
+                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
+                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
 
+                                {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
                             </ul>
@@ -115,6 +123,44 @@
     <section class="property-section spad">
         <div class="container">
             <div class="row">
+                 <div class="col-lg-6">
+                    <div class="agent-search-form">
+                        <form action="#">
+                            <input type="text" id="livebox" placeholder="Find property by name, city, neighborhood, location, property type, property status, no of rooms, no of bathrooms, no of garages, postal code ">
+                                  </form>
+                         <span id="datalist" ></span>
+                        <script src="{{ url_for('static', filename='ajax.js') }}"></script>
+<script >
+    $(document).ready(function(){
+    $("#livebox").keyup(function(e){
+                text= $("#livebox").val();
+            console.log(text);
+
+               $.ajax({
+                method: "post",
+                url: '/search/apartment',
+                data: {text: text},
+                success: function(res){
+
+                var data = "<ul>";
+                $.each(res,function(index,value){
+                if(value.apartment_name != -1 ){
+
+                data += '<li class="btn"><a  href="/property/detail/'+value.public_id+'"><span >'+value.apartment_name+' '+value.city+'  </span> | <span class="text-muted"> '+value.location+'  '+value.neighbourhood+'  </span></a> </li>';
+               }
+                });
+                data += "</ul>";
+                $("#datalist").html(data);
+            }
+          });
+          });
+          });
+
+</script>
+                    </div>
+                </div>
+
+
                 <div class="col-lg-12">
                     <div class="section-title">
                         <h4>PROPERTY Grid</h4>
@@ -125,13 +171,14 @@
                 {% for apt in apartment.items%}
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-1.jpg">
+                        <div class="pi-pic set-bg" data-setbg=" {{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}
+">
                             <div class="label">{{apt.property_status}}</div>
                         </div>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                             <div class="pt-price">{{apt.price}}</div>
-                            <h5><a href="#">Home in {{apt.neighbourhood}}</a></h5>
+                            <h5><a href="{{ url_for('main.property_details', public_id=apt.public_id) }}">Home in {{apt.neighbourhood}}</a></h5>
                             <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.city}}, {{apt.country}}, {{apt.postal_code}}</p>
                             <ul>
                                 <li><i class="fa fa-object-group"></i> {{apt.area_size}}</li>
@@ -143,11 +190,11 @@
                                 <div class="pa-item">
                                     <div class="pa-info">
 
-                                          <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
-                                        <h6>Ashton Kutcher</h6>
+                                          <img alt="" src="   {{  url_for('static', filename= 'Apartment_pics/' + apt.broker.agent_image_file) }}">
+                                        <h6>{{apt.broker.first_name}} {{apt.broker.last_name}}</h6>
                                     </div>
                                     <div class="pa-text">
-                                        123-455-688
+                                        {{apt.broker.phone_no}}
                                     </div>
                                 </div>
                             </div>

@@ -62,6 +62,10 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
+                            {% if current_user.is_authenticated%}
+
+                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
+                            {% endif %}
                             <ul>
                                 <li><a  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li><a href="#">Properties</a>
@@ -73,6 +77,10 @@
                                     </ul>
                                 </li>
                                      <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                             {% if not current_user.is_authenticated%}
+                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
+                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
+                                {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
                             </ul>
@@ -118,9 +126,37 @@
                 <div class="col-lg-6">
                     <div class="agent-search-form">
                         <form action="#">
-                            <input type="text" placeholder="Find agent">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                            <input type="text" id="livebox" placeholder="Find agent by Name or Email address">
+                                  </form>
+                         <span id="datalist" ></span>
+                        <script src="{{ url_for('static', filename='ajax.js') }}"></script>
+<script >
+    $(document).ready(function(){
+    $("#livebox").keyup(function(e){
+                text= $("#livebox").val();
+            console.log(text);
+
+               $.ajax({
+                method: "post",
+                url: '/search/agent',
+                data: {text: text},
+                success: function(res){
+
+                var data = "<ul>";
+                $.each(res,function(index,value){
+                if(value.first_name != -1 ){
+
+                data += '<li class="btn"><a  href="profile/'+value.first_name+'/'+value.last_name+'"><span >'+value.first_name+' '+value.last_name+'  </span> | <span class="text-muted"> '+value.email+'  '+value.phone_no+' </span></a> </li>';
+               }
+                });
+                data += "</ul>";
+                $("#datalist").html(data);
+            }
+          });
+          });
+          });
+
+</script>
                     </div>
                 </div>
             </div>
@@ -133,7 +169,7 @@
                         <div class="as-item">
                             <div class="as-pic">
 
-                                <img src="{{ url_for('static', filename='img/agents/agent-1.jpg') }}">
+                                <img src="{{  url_for('static', filename= 'Apartment_pics/' + agt.agent_image_file) }}">
                                 <div class="rating-point">
                                     4.5
                                 </div>

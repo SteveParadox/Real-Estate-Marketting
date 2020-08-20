@@ -59,6 +59,10 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
+                            {% if current_user.is_authenticated%}
+
+                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
+                            {% endif %}
                             <ul>
                                 <li class="active"> <a class="hw-btn"  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li><a href="#">Properties</a>
@@ -72,10 +76,18 @@
                                 </li>
 
                                    <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                              {% if not current_user.is_authenticated%}
+                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
+                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
+
+                                {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+
                             </ul>
+
                         </nav>
+
                     </div>
                     <div class="col-lg-3">
                         <div class="hn-social">
@@ -97,7 +109,8 @@
         <div class="container">
             <div class="hs-slider owl-carousel">
                 {%for apt in apartment%}
-                <div class="hs-item set-bg" data-setbg="static/img/hero/hero-1.jpg">
+                <div class="hs-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}">
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="hc-inner-text">
@@ -330,6 +343,7 @@
 
 
 </script>
+
     <!-- Property Section Begin -->
      <section class="property-section latest-property-section spad">
         <div class="container">
@@ -357,11 +371,17 @@
                 <div class="col-lg-4 col-md-6 mix all ">
                     <div class="property-item">
 
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-4.jpg">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}" >
+
+
                             <div class="label c-red">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            {% if lat.love < 2%}
+                            <span >{{lat.love}} love this</span>
+                            {% else %}
+                            <span >{{lat.love}} loves this</span>
+                            {% endif %}
                             <div class="pt-price">${{lat.price}}</div>
                             <h5><a  href="{{ url_for('main.property_details', public_id=lat.public_id) }}">{{lat.apartment_name}}</a></h5>
                             <p><span class="icon_pin_alt"></span> {{lat.location}}, {{lat.city}} {{lat.country}}</p>
@@ -374,7 +394,7 @@
                             <div class="pi-agent">
                                 <div class="pa-item">
                                     <div class="pa-info">
-                                        <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                        <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -391,7 +411,8 @@
                 <div class="col-lg-4 col-md-6 mix apart">
                     <div class="property-item">
 
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-1.jpg">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}" >
+
                             <div class="label">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
@@ -410,7 +431,7 @@
                                 <div class="pa-item">
                                     <div class="pa-info">
 
-                                         <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                         <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -428,7 +449,9 @@
                 <div class="col-lg-4 col-md-6 mix  house">
                     <div class="property-item">
 
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-1.jpg">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
+
+
                             <div class="label">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
@@ -447,7 +470,7 @@
                                 <div class="pa-item">
                                     <div class="pa-info">
 
-                                         <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                           <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -464,7 +487,9 @@
                 {% for lat in latest_office%}
                 <div class="col-lg-4 col-md-6 mix office">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-2.jpg">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
+
+
                             <div class="label c-red">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
@@ -483,7 +508,7 @@
                                 <div class="pa-item">
                                     <div class="pa-info">
 
-                                         <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                           <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -496,9 +521,9 @@
                 </div>
                 {% endfor %}
                 {%for lat in latest.rest%}
-                <div class="col-lg-4 col-md-6 mix  resturant">
+                <div class="col-lg-4 col-md-6 mix  restaruent">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-5.jpg">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
                             <div class="label c-magenta">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
@@ -515,7 +540,7 @@
                             <div class="pi-agent">
                                 <div class="pa-item">
                                     <div class="pa-info">
-                                         <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                         <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -531,8 +556,10 @@
                 {%for lat in latest.store%}
                 <div class="col-lg-4 col-md-6 mix   hotel">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="static/img/property/property-5.jpg">
-                            <div class="label c-magenta">{{lat.property_status}}</div>
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
+
+
+<div class="label c-magenta">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
@@ -549,7 +576,7 @@
                             <div class="pi-agent">
                                 <div class="pa-item">
                                     <div class="pa-info">
-                                         <img alt="" src="{{ url_for('static', filename='img/property/posted-by/pb-1.jpg') }}">
+                                         <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                                         <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
@@ -650,7 +677,7 @@
                 {% if rand_apt %}
                 <div class="col-lg-8 p-0">
                     <div class="fp-slider owl-carousel">
-                        <div class="fp-item set-bg" data-setbg="static/img/feature-property/fp-1.jpg">
+                        <div class="fp-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + rand_apt.image_file2) }}">
                             <div class="fp-text">
                                 <h5 class="title">Home in {{rand_apt.neighbourhood}}</h5>
                                 <p><span class="icon_pin_alt"></span>{{rand_apt.location}}, {{rand_apt.city}}, {{rand_apt.country}} {{rand_apt.postal_code}}</p>
@@ -664,7 +691,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="fp-item set-bg" data-setbg="static/img/feature-property/fp-2.jpg">
+                        <div class="fp-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + rand_apt2.image_file2) }}">
                             <div class="fp-text">
                                 <h5 class="title">Home in {{rand_apt2.neighbourhood}}</h5>
                                 <p><span class="icon_pin_alt"></span> {{rand_apt2.location}}, {{rand_apt2.city}}, {{rand_apt2.country}} {{rand_apt2.postal_code}}</p>
@@ -703,7 +730,7 @@
                     <div class="ts-item">
                         <div class="ts-text">
 
-                            <img alt="" src="{{ url_for('static', filename='img/team/team-1.jpg') }}">
+                              <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
                             <h5>{{lat.broker.first_name}} {{lat.broker.last_name}}</h5>
                             <span>{{lat.broker.phone_no}}</span>
                              <div class="ts-social">

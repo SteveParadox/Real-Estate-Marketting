@@ -13,10 +13,9 @@
             <span class="icon_close"></span>
         </div>
         <div class="logo">
-            <a href="./index.html">
+            <a  href="{{ url_for('main.home') }}">
 
-                 <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
-
+                  <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -41,13 +40,14 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="logo">
-                            <a  href="{{ url_for('main.home') }}"> <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
+                            <a  href="{{ url_for('main.home') }}">
+                                 <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
                         </div>
                     </div>
                     <div class="col-lg-10">
                         <div class="ht-widget">
 
-                              <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+                               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
                         </div>
                     </div>
                 </div>
@@ -69,14 +69,15 @@
                                 <li><a  href="{{ url_for('main.home') }}">Home</a></li>
                                 <li class="active"><a href="#">Properties</a>
                                     <ul class="dropdown">
-                           <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
 
-                                              <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
+                                        <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
+
+                                        <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
                                         <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
                                     </ul>
                                 </li>
-                                  <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
-                           {% if not current_user.is_authenticated%}
+                                     <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
+                                   {% if not current_user.is_authenticated%}
                                 <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
                                  <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
                                 {%endif%}
@@ -101,15 +102,15 @@
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section spad set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <section class="breadcrumb-section spad set-bg" data-setbg="static/img/breadcrumb-bg.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <h4>Property Grid</h4>
+                        <h4>Registration</h4>
                         <div class="bt-option">
-                            <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
-                            <span>Property</span>
+                            <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
+                            <span>Register</span>
                         </div>
                     </div>
                 </div>
@@ -118,72 +119,69 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-    <!-- Property Section Begin -->
-    <section class="property-section spad">
+    <!-- Property Submit Section Begin -->
+    <section class="property-submit-section spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">
-                        <h4>PROPERTY Grid</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                {% for apt in apartment.items%}
-                <div class="col-lg-4 col-md-6">
-                    <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}">
-                            <div class="label">{{apt.property_status}}</div>
-                        </div>
-                        <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-                            <div class="pt-price">{{apt.price}}</div>
-                            <h5><a href="#">Home in {{apt.neighbourhood}}</a></h5>
-                            <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.city}}, {{apt.country}}, {{apt.postal_code}}</p>
-                            <ul>
-                                <li><i class="fa fa-object-group"></i> {{apt.area_size}}</li>
-                                <li><i class="fa fa-bathtub"></i>{{apt.no_of_bathrooms}}</li>
-                                <li><i class="fa fa-bed"></i> {{apt.no_of_bedrooms}}</li>
-                                <li><i class="fa fa-automobile"></i> {{apt.no_of_garages}}</li>
-                            </ul>
-                            <div class="pi-agent">
-                                <div class="pa-item">
-                                    <div class="pa-info">
+                    <div class="property-submit-form">
+                         <form method="POST" action="" enctype="multipart/form-data" >
+                                {{ form.hidden_tag() }}
+                             <fieldset>
+                                 <div class="pf-title">
+                                <h4>First  Name</h4>
 
-                                          <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + apt.broker.agent_image_file) }}">
-                                        <h6>{{apt.broker.first_name}} {{apt.broker.last_name}}</h6>
-                                    </div>
-                                    <div class="pa-text">
-                                        {{apt.broker.phone_no}}
-                                    </div>
-                                </div>
+                                {{ form.agent_first_name (type="text", placeholder="First Name*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Last Name</h4>
+
+                                {{ form.agent_last_name (type="text", placeholder="Last Name*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Country</h4>
+
+                                {{ form.country (type="text", placeholder="Country*")}}
+                                     <br>
+                                     <br>
+                                      <h4>Gender</h4>
+                                     {{form.gender}}
+                                     <br>
+                                     <br>
+                                     <br>
+                                     <h4>Email</h4>
+
+                                {{ form.agent_email (type="email", placeholder="Email address*")}}
+                                     <br>
+                                     <br>
+                                      <h4>Phone Number</h4>
+
+                                {{ form.agent_phone_no (type="text", placeholder="Phone Number*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Password</h4>
+
+                                {{ form.agent_password (type="password", placeholder=" Enter Password*")}}
+                                     <br>
+                                     <br>
+                                        <h4>Confirm Password</h4>
+
+                                {{ form.confirm_password (type="password", placeholder="Confirm Password*")}}
+                                     <br>
+                                     <br>
+                                     <h4>Agent/Owner Image</h4>
+
+                                    {{ form.agent_photo(class="") }}
+
+                      {{ form.agent_photo.label() }}
+
                             </div>
-                        </div>
+                             </fieldset>
+                             {{ form.submit(class="site-btn")}}
+                         </form>
                     </div>
                 </div>
-{%endfor%}
-
-
-
-{% if apartment.has_prev %}
-         <div class="col-lg-12">
-                    <div class="loadmore-btn">
-        <a class="btn btn-outline-info" href="{{ url_for('main.property_list', page=apartment.prev_num) }}"> Newer </a>{% else %}
-
-            </div>
-        </div>
-                {% endif %}
-{% if apartment.has_next %}
-         <div class="col-lg-12">
-                    <div class="loadmore-btn">
-        <a class="btn btn-outline-info" href="{{ url_for('main.property_list', page=apartment.next_num) }}"> Older </a>{% else %}
-
-            </div>
-        </div>
-                {% endif %}
             </div>
         </div>
     </section>
-    <!-- Property Section End -->
-
-      {% endblock content%}
+{% endblock content%}
