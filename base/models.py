@@ -9,6 +9,11 @@ def load_user(admin_id):
     return Admin.query.get(int(admin_id))
 
 
+@login_manager.user_loader
+def load_user(agent_id):
+    return Agent.query.get(int(agent_id))
+
+
 # the model configuration of the database
 
 class Admin(db.Model, UserMixin):
@@ -22,19 +27,22 @@ class Admin(db.Model, UserMixin):
     auth_key = db.Column(db.String(), unique=True)
 
 
-class Agent(db.Model):
+class Agent(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(), nullable=False)
     last_name = db.Column(db.String(), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     country = db.Column(db.String(), nullable=False)
-    email = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
     phone_no = db.Column(db.String(), nullable=False)
     gender = db.Column(db.String(), nullable=False)
     date_uploaded = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date_registered = db.Column(db.DateTime, nullable=False, default=datetime.now)
     agent_image_file = db.Column(db.String(20), nullable=False)
     agent_photo_data = db.Column(db.LargeBinary)
     amount_earned = db.Column(db.Integer(), default=0)
     buildings_sold = db.Column(db.Integer(), default=0)
+    # location = db.Column(db.String(), nullable=False)
     client = db.relationship('Client', backref='real_estate', lazy=True)
     apartment = db.relationship('Apartment', backref='broker', lazy=True)
 
@@ -74,10 +82,25 @@ class Apartment(db.Model):
     photo_data2 = db.Column(db.LargeBinary)
     image_file3 = db.Column(db.String(20), nullable=False)
     photo_data3 = db.Column(db.LargeBinary)
+    image_file4 = db.Column(db.String(20), nullable=False)
+    photo_data4 = db.Column(db.LargeBinary)
+    image_file5 = db.Column(db.String(20), nullable=False)
+    photo_data5 = db.Column(db.LargeBinary)
+    image_file6 = db.Column(db.String(20), nullable=False)
+    photo_data6 = db.Column(db.LargeBinary)
+    image_file7 = db.Column(db.String(20), nullable=False)
+    photo_data7 = db.Column(db.LargeBinary)
+    image_file8 = db.Column(db.String(20), nullable=False)
+    photo_data8 = db.Column(db.LargeBinary)
+    image_file9 = db.Column(db.String(20), nullable=False)
+    photo_data9 = db.Column(db.LargeBinary)
+    image_file0 = db.Column(db.String(20), nullable=False)
+    photo_data0 = db.Column(db.LargeBinary)
     floor_plan_file = db.Column(db.String(20), nullable=False)
     floor_plan_photo_data = db.Column(db.LargeBinary)
-    price = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Integer)
     second_price = db.Column(db.Integer)
+    price_label = db.Column(db.String())
     size_prefix = db.Column(db.String(), default="sqft")
     date_uploaded = db.Column(db.DateTime, nullable=False, default=datetime.now)
     cleared = db.Column(db.Boolean, default=False)
@@ -124,6 +147,14 @@ class AgentSchema(ModelSchema):
 
 agent_schema = AgentSchema()
 agents_schema = AgentSchema(many=True)
+
+class ReviewSchema(ModelSchema):
+    class Meta:
+        model = Review
+
+
+review_schema = ReviewSchema()
+reviews_schema = ReviewSchema(many=True)
 
 
 class ApartmentSchema(ModelSchema):

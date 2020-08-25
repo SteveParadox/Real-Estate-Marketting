@@ -18,11 +18,11 @@ ma = Marshmallow()
 bcrypt = Bcrypt()
 migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_view = 'api.login_admin'
+login_manager.login_view = 'agent.login'
 login_manager.login_message = None
 login_manager.session_protection = "strong"
 REMEMBER_COOKIE_NAME = 'remember_token'
-REMEMBER_COOKIE_DURATION = datetime.timedelta(days=64, seconds=29156, microseconds=10)
+REMEMBER_COOKIE_DURATION = datetime.timedelta(days=164, seconds=29156, microseconds=10)
 REMEMBER_COOKIE_REFRESH_EACH_REQUEST = False
 socketio = SocketIO()
 mail = Mail()
