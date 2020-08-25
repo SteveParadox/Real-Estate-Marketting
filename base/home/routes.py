@@ -5,9 +5,9 @@ from flask import *
 from flask_login import login_required, current_user
 
 from base import db
-from base.home.forms import ApartmentForm
+from base.home.forms import ApartmentForm, ReviewForm
 from base.home.utils import save_img
-from base.models import Apartment, Agent, AgentSchema, ApartmentSchema
+from base.models import Apartment, Agent, AgentSchema, ApartmentSchema, Review, ReviewSchema
 import random
 
 main = Blueprint('main', __name__)
@@ -16,27 +16,37 @@ main = Blueprint('main', __name__)
 @main.route('/search', methods=['POST'])
 def search():
     data = request.form.get('text')
-    data2 = request.form.get('text1')
-    data3 = request.form.get('text2')
-    search = Apartment.query.filter_by(city = data).all()
-    if search :
-        search = Apartment.query.filter_by(city=data).all()
-        if search:
-            search = Apartment.query.filter_by(no_of_bedrooms=data2).all()
-            if search:
-                search = Apartment.query.filter_by(no_of_bathrooms=data3).all()
+    data2 = request.form.get('text2')
+    data3 = request.form.get('text3')
+    data4 = request.form.get('text4')
+    search = Apartment.query.filter_by(no_of_bedrooms=data2).filter_by(city=data).filter_by(no_of_bathrooms=data3) \
+        .filter_by(location=data4).all()
+    if len(data) < 1:
+        search = Apartment.query.filter_by(no_of_bedrooms=data2).filter_by(
+            no_of_bathrooms=data3).filter_by(location=data4).all()
+    if len(data2) < 1:
+        search = Apartment.query.filter_by(city=data).filter_by(
+            no_of_bathrooms=data3).filter_by(location=data4).all()
+    if len(data3) < 1:
+        search = Apartment.query.filter_by(no_of_bedrooms=data2). \
+            filter_by(city=data).filter_by(location=data4).all()
+    if len(data4) < 1:
+        search = Apartment.query.filter_by(no_of_bedrooms=data2). \
+            filter_by(city=data).filter_by(no_of_bathrooms=data3).all()
 
     agent_schema = ApartmentSchema(many=True)
     res = agent_schema.dump(search)
     return jsonify(res)
 
+
 @main.route('/property/detail/love/<string:public_id>', methods=['POST'])
 def add_rate(public_id):
     data = request.form.get('text')
     apartment = Apartment.query.filter_by(public_id=public_id).first()
-    apartment.love=apartment.love + ((int(data)*0)+1)
+    apartment.love = apartment.love + ((int(data) * 0) + 1)
     db.session.commit()
     return jsonify(apartment.love)
+
 
 @main.route('/')
 def home():
@@ -117,18 +127,48 @@ def type(property_type):
     return render_template('properties.html', apartment=apartment)
 
 
-
-
-@main.route('/property/detail/<string:public_id>')
+@main.route('/property/detail/<string:public_id>', methods=['GET', 'POST'])
 def property_details(public_id):
+    page = request.args.get('page', 1, type=int)
     apartment = Apartment.query.filter_by(public_id=public_id).first()
+    review = Review.query.filter_by(apartment_id=apartment.id).order_by(Review.date_comment.desc()).paginate(page=page, per_page=0)
+    form = ReviewForm()
+    if form.is_submitted():
+        rev = Review(message= form.message.data, first_name=form.name.data, email= form.email.data,
+                     apartment_id=apartment.id)
+        db.session.add(rev)
+        db.session.commit()
+        print('committed')
+        return redirect(url_for('main.property_details', public_id=apartment.public_id))
+    return render_template('property-details.html', apartment=apartment,
+                           review=review, form=form)
 
-    return render_template('property-details.html', apartment=apartment)
+
+@main.route('/property/details/<string:public_id>', methods=['GET', 'POST'])
+def property_detail(public_id):
+    data= request.form.get('text')
+    page = request.args.get('page', int(data), type=int)
+    apartment = Apartment.query.filter_by(public_id=public_id).first()
+    review = Review.query.filter_by(apartment_id=apartment.id).order_by(Review.date_comment.desc()).paginate()
+    review_schema = ReviewSchema(many=True)
+    result = review_schema.dump(review.items)
+    return jsonify(result)
+
+
+
+@main.route('/rev', methods=['GET'])
+def get_rev():
+    # printing the list of all the agents in the database
+    rev = Review.query.all()
+    review_schema = ReviewSchema(many=True)
+    result = review_schema.dump(rev)
+    return jsonify(result)
+
 
 @main.route('/search/apartment', methods=['POST'])
 def apartment_search():
     data = request.form.get('text')
-    apartment= Apartment.query.filter_by(apartment_name=data).all()
+    apartment = Apartment.query.filter_by(apartment_name=data).all()
     if not apartment:
         apartment = Apartment.query.filter_by(city=data).all()
         if not apartment:
@@ -162,19 +202,50 @@ def property_submit():
         photo_file1 = save_img(form.photo1.data)
         file1 = request.files['photo1']
         photo_file2 = save_img(form.photo2.data)
-        file2 = request.files['photo1']
-        photo_file3 = save_img(form.front_plan.data)
-        file3 = request.files['front_plan']
+        file2 = request.files['photo2']
+
+        photo_file3 = save_img(form.photo3.data)
+        file3 = request.files['photo3']
+        photo_file4 = save_img(form.photo4.data)
+        file4 = request.files['photo4']
+        photo_file5 = save_img(form.photo5.data)
+        file5 = request.files['photo5']
+        photo_file6 = save_img(form.photo6.data)
+        file6 = request.files['photo6']
+        photo_file7 = save_img(form.photo7.data)
+        file7 = request.files['photo7']
+        photo_file8 = save_img(form.photo8.data)
+        file8 = request.files['photo8']
+        photo_file9 = save_img(form.photo9.data)
+        file9 = request.files['photo9']
+
+        photo_filex = save_img(form.front_plan.data)
+        filex = request.files['front_plan']
         agent = Agent()
         apartment = Apartment(broker=current_user)
         apartment.image_file = photo_file
-        apartment.photo_data2 = file.read()
+        apartment.photo_data = file.read()
         apartment.image_file2 = photo_file1
-        apartment.photo_data3 = file1.read()
+        apartment.photo_data2 = file1.read()
         apartment.image_file3 = photo_file2
-        apartment.photo_data = file2.read()
-        apartment.floor_plan_file = photo_file3
-        apartment.floor_plan_photo_data = file3.read()
+        apartment.photo_data3 = file2.read()
+        apartment.image_file4 = photo_file3
+        apartment.photo_data4 = file3.read()
+        apartment.image_file5 = photo_file4
+        apartment.photo_data5 = file4.read()
+        apartment.image_file6 = photo_file5
+        apartment.photo_data6 = file5.read()
+        apartment.image_file7 = photo_file6
+        apartment.photo_data7 = file6.read()
+        apartment.image_file8 = photo_file7
+        apartment.photo_data8 = file7.read()
+        apartment.image_file9 = photo_file8
+        apartment.photo_data9 = file8.read()
+        apartment.image_file0 = photo_file9
+        apartment.photo_data0 = file9.read()
+        apartment.price_label = form.price_label.data
+        apartment.floor_plan_file = photo_filex
+        apartment.floor_plan_photo_data = filex.read()
         apartment.apartment_name = form.apartment_name.data
         apartment.description = form.description.data
         apartment.public_id = str(shortuuid.uuid())

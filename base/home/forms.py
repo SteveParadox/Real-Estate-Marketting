@@ -24,6 +24,14 @@ class ApartmentForm(FlaskForm):
     photo = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     photo1 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     photo2 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo3 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo4 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo5 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo6 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo7 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo8 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo9 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
+    photo0 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     front_plan = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     no_of_bedrooms = IntegerField(validators=[DataRequired()])
     no_of_bathrooms = IntegerField(validators=[DataRequired()])
@@ -32,9 +40,15 @@ class ApartmentForm(FlaskForm):
     area_size = IntegerField(validators=[DataRequired()])
     price = IntegerField(validators=[DataRequired()])
     second_price = IntegerField(validators=[DataRequired()])
+    price_label = SelectField(choices=[('month', "Monthly"), ("year", "Yearly"), ("full sale", "Sale")],
+                                  validators=[DataRequired()])
     submit = SubmitField('Submit Property')
 
 
-class LoginForm(FlaskForm):
-    agent_email = StringField(validators=[DataRequired()])
-    agent_password = PasswordField(validators=[DataRequired()])
+
+
+class ReviewForm(FlaskForm):
+    name = StringField(validators=[DataRequired()])
+    message = TextAreaField(validators=[DataRequired()])
+    email = StringField(validators=[DataRequired()])
+    submit=SubmitField('Post review')
