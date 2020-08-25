@@ -83,6 +83,9 @@
                                 {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                                 {% if current_user.is_authenticated%}
+ <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
+                            {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -102,7 +105,7 @@
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section spad set-bg" data-setbg="static/img/breadcrumb-bg.jpg">
+    <section class="breadcrumb-section spad set-bg" data-setbg="{{  url_for('static', filename= 'img/breadcrumb-bg.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -110,7 +113,7 @@
                         <h4>Property Submit</h4>
                         <div class="bt-option">
                             <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
-                            <span>Property</span>
+                            <span>Property Submit</span>
                         </div>
                     </div>
                 </div>
@@ -118,6 +121,12 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
+<style>
+    .sty{
+    color:#7b1bf0;
+    }
+</style>
+
 
     <!-- Property Submit Section Begin -->
     <section class="property-submit-section spad">
@@ -130,9 +139,10 @@
                              <fieldset>
 
                             <div class="pf-title">
-                                <h4>Apartment Name</h4>
+                                <h4 style="margin-bottom: 15px;">Property Name</h4>
+                                <p class="sty">Name should begin with a capital letter</p>
 
-                                {{ form.apartment_name (type="text", placeholder="Apartment Name*")}}
+                                {{ form.apartment_name (type="text", placeholder="Property Name*")}}
                             </div>
                             <div class="pf-summernote">
                                 <h4>Description</h4>
@@ -150,7 +160,6 @@
                             <div class="pf-location">
                                 <h4>Property Location</h4>
                                 <div class="location-inputs">
-
                                     {{ form.location (placeholder="Address*", type="text")}}
                                     {{ form.neighborhood (placeholder="Neighborhood*", type="text")}}
                                     {{ form.city (placeholder="City*", type="text")}}
@@ -179,29 +188,37 @@
                                 </div>
                             </div>
                             <div class="pf-type">
-                                <h4>Property type</h4>
+                                <h4 style="margin-bottom: 15px;">Property type</h4>
                                 <div class="status-item">
+                                    <p class="sty">Select type of property </p>
                                      {{form.property_type}}
                                 </div>
                             </div>
                              <br>
                              <br>
                             <div class="pf-status">
-                                <h4>Property status</h4>
+                                <h4 style="margin-bottom: 15px;">Property status</h4>
+                                <p class="sty">Select property status </p>
+
                                 <div class="status-item">
                                     {{form.property_status}}
                                 </div>
                             </div>
                              <br>
                              <br>
+
                             <div class="pf-feature-price">
-                                <h4>Featured Price</h4>
+                                <h4 style="margin-bottom: 15px;">Featured Price</h4>
+                                 <p class="sty">Fix a price for your property </p>
                                 <div class="fp-inputs">
                                     {{ form.price (type="text", placeholder="Price*")}}
                                     {{ form.second_price (type="text", placeholder="Second Price ( Optional )")}}
-                                    <input type="text" placeholder="After Price Label (ex: monthly)">
+                                     <p class="sty">Choose term of sale</p>
+                                    {{ form.price_label }}
                                 </div>
                             </div>
+<br>
+                                 <br>
                             <div class="pf-feature">
                                 <h4>Property Features</h4>
                                 <div class="features-list">
@@ -282,9 +299,28 @@
                             <div class="pf-feature-image">
                                 <h4>Property Images</h4>
 
-                                    {{ form.photo(class="") }}
+                                <script>
+   updateList = function() {
+      var input = document.getElementById('agent_photo');
+      var output = document.getElementById('fileList');
+      var children = "";
+      for (var i = 0; i < input.files.length; ++i) {
+          children +=  '<li>'+ input.files.item(i).name + '<span class="remove-list" onclick="return this.parentNode.remove()">X</span>' + '</li>'
+      }
+      output.innerHTML = children;
+  }</script>
 
-                      {{ form.photo.label() }}
+
+<div class="custom-file">
+
+                                   <input class="custom-file-input" id="photo" name="photo" onchange="javascript:updateList()" required type="file">
+
+                     <label class="custom-file-label" for="photo"><img width="30" src="https://image.flaticon.com/icons/svg/54/54565.svg" /> Upload Profile Image</label>
+</div>
+<ul id="fileList" class="file-list"></ul>
+
+                            </div>
+
 
 
 
@@ -298,7 +334,35 @@
 
                       {{ form.photo2.label() }}
 
-                            </div>
+                                 {{ form.photo3(class="") }}
+
+                      {{ form.photo3.label() }}
+
+
+                      {{ form.photo4.label() }}
+                                 {{ form.photo4(class="") }}
+
+                      {{ form.photo5.label() }}
+                                 {{ form.photo5(class="") }}
+
+                      {{ form.photo6.label() }}
+                                 {{ form.photo6(class="") }}
+
+                      {{ form.photo7.label() }}
+                                {{ form.photo7(class="") }}
+
+                      {{ form.photo8.label() }}
+                                {{ form.photo8(class="") }}
+
+                      {{ form.photo9.label() }}
+                                 {{ form.photo9(class="") }}
+
+                      {{ form.photo0.label() }}
+                                {{ form.photo0 }}
+
+
+
+
                                    <div class="pf-feature-image">
                                 <h4>Floor Plan Image</h4>
 

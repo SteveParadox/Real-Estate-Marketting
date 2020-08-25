@@ -80,6 +80,9 @@
                                  <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
                                 {%endif%}    <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                                 {% if current_user.is_authenticated%}
+ <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
+                            {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -117,13 +120,13 @@
                                     <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file2) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file3) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-4.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file4) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-5.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file5) }}"></div>
                                 </div>
                             </div>
                         </div>
@@ -136,23 +139,23 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-12 p-0">
-                                    <div class="ps-item-inner large-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file2) }}"></div>
+                                    <div class="ps-item-inner large-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file6) }}"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file3) }}"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file7) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-2.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file8) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-4.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file9) }}"></div>
                                 </div>
                                 <div class="col-sm-6 p-0">
-                                    <div class="ps-item-inner set-bg" data-setbg="img/property/slider/ps-5.jpg"></div>
+                                    <div class="ps-item-inner set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apartment.image_file0) }}"></div>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +172,12 @@
                                 <div class="pd-title">
                                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                                     <div class="label">{{apartment.property_status}}</div>
-                                    <div class="pt-price">$ {{apartment.price}}</div>
+
+                                     {% if apartment.price_label == 'full sale' %}
+                                    <div class="pt-price">${{apartment.price}}</div>
+                                    {% else %}
+                                   <div class="pt-price">${{apartment.price}}<span>/{{apartment.price_label}}</span></div>
+                                    {% endif %}
                                     <h3>Home in {{apartment.neighbourhood}}</h3>
                                     <p><span class="icon_pin_alt"></span>{{apartment.country}}, {{apartment.city}}, {{apartment.address}} {{apartment.postal_code}}</p>
                                 </div>
@@ -232,7 +240,12 @@ $('#count').html(function(i, val) {
                                                 </li>
                                                 <li>
                                                     <span class="type-name">Price</span>
-                                                    <span class="type-value">$ {{apartment.price}}</span>
+
+                                                     {% if apartment.price_label == 'full sale' %}
+                                                    <span class="type-value">${{apartment.price}}</span>
+                                    {% else %}
+                                                    <span class="type-value">${{apartment.price}}<span>/{{apartment.price_label}}</span></span>
+                                    {% endif %}
                                                 </li>
                                                 <li>
                                                     <span class="type-name">Year Built</span>
@@ -244,7 +257,7 @@ $('#count').html(function(i, val) {
                                                 </li>
                                                 <li>
                                                     <span class="type-name">Agent/Owner</span>
-                                                    <span class="type-value">{{apartment.broker.first_name}} {{apartment.broker.last_name}}</span>
+                                                    <span class="type-value"><a  href="{{ url_for('agent.profile', agent_name=apartment.broker.first_name, agent_last_name=apartment.broker.last_name) }}">{{apartment.broker.first_name}} {{apartment.broker.last_name}}</a></span>
                                                 </li>
                                             </ul>
                                             <ul class="right-table">
@@ -269,8 +282,8 @@ $('#count').html(function(i, val) {
                                                     <span class="type-value">{{apartment.no_of_garages}}</span>
                                                 </li>
                                                 <li>
-                                                    <span class="type-name">Parking lots</span>
-                                                    <span class="type-value">2</span>
+                                                    <span class="type-name">Location</span>
+                                                    <span class="type-value">{{apartment.location}}</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -397,7 +410,7 @@ $('#count').html(function(i, val) {
                                     <div class="at-title">
                                         <h6>{{apartment.broker.first_name}} {{apartment.broker.last_name}}</h6>
                                         <span>{{apartment.broker.country}}</span>
-                                        <a class="primary-btn" href="{{ url_for('agent.profile', agent_name=apartment.broker.first_name, agent_last_name=apartment.broker.last_name) }}"> VIew profile</a>
+                                        <a class="primary-btn" href="{{ url_for('agent.profile', agent_name=apartment.broker.first_name, agent_last_name=apartment.broker.last_name) }}"> View profile</a>
                                     </div>
                                     <div class="at-option">
                                         <div class="at-number">{{apartment.broker.phone_no}}</div>
@@ -412,7 +425,8 @@ $('#count').html(function(i, val) {
                             </div>
                         </div>
                         <div class="pd-widget">
-                            <h4>02 reviews</h4>
+                            <h4>{{review.total}} Reviews</h4>
+                            {% for rev in review.items %}
                             <div class="pd-review">
                                 <div class="pr-item">
                                     <div class="pr-avatar">
@@ -421,8 +435,9 @@ $('#count').html(function(i, val) {
                                             <img alt="" src="{{ url_for('static', filename='img/property/details/review/review-1.jpg') }}">
                                         </div>
                                         <div class="pr-text">
-                                            <h6>Brandon Kelley</h6>
-                                            <span>15 Aug 2017</span>
+                                            <h6>{{rev.first_name}}</h6>
+                                             <span>{{rev.email}}</span>
+                                            <span>{{rev.date_comment}}</span>
                                             <div class="pr-rating">
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
@@ -432,39 +447,43 @@ $('#count').html(function(i, val) {
                                             </div>
                                         </div>
                                     </div>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                </div>
-                                <div class="pr-item">
-                                    <div class="pr-avatar">
-                                        <div class="pr-pic">
+                                    {{ rev.message }}
+                                    </div>
 
-                                             <img alt="" src="{{ url_for('static', filename='img/property/details/review/review-2.jpg') }}">
-                                        </div>
-                                        <div class="pr-text">
-                                            <h6>Matthew Nelson</h6>
-                                            <span>15 Aug 2017</span>
-                                            <div class="pr-rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                </div>
                             </div>
+                            {% endfor %}
+                             <span id="datalist" ></span>
+
+                             <div class="col-lg-12">
+                    <div class="loadmore-btn">
+        <button class="btn btn-outline-info" id="livebox">
+            load more
+        </button>
+                    </div>
+                             </div>
+
+<script src="{{ url_for('static', filename='ajax.js') }}"></script>
+<script src="{{ url_for('static', filename='paging.js') }}" >
+
+                </script>
                         </div>
+
+
+
+
+
                         <div class="pd-widget">
-                            <h4>YOur Rating</h4>
-                            <form action="#" class="review-form">
+                            <h4>Your Comment</h4>
+                             <form method=POST enctype=multipart/form-data class="review-form" action="">
+        {{ form.hidden_tag() }}
                                 <div class="group-input">
-                                    <input type="text" placeholder="Name">
-                                    <input type="text" placeholder="Email">
-                                    <input type="text" placeholder="Website">
+
+                                    {{ form.name ( placeholder="Name")}}
+
+                                    {{ form.email(placeholder="Email")}}
+
                                 </div>
-                                <textarea placeholder="Messages"></textarea>
+                                {{form.message(placeholder="Messages")}}
                                 <div class="rating">
                                     <span>Your Rating:</span>
                                     <i class="fa fa-star"></i>
@@ -473,44 +492,13 @@ $('#count').html(function(i, val) {
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <button type="submit" class="site-btn">send messages</button>
-                            </form>
+                                {{form.submit(class="site-btn")}}
+                                     </form>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="property-sidebar">
-                        <div class="single-sidebar">
-                            <div class="section-title sidebar-title">
-                                <h5>Top agent</h5>
-                            </div>
-                            <div class="top-agent">
-                                <div class="ta-item">
-                                    <div class="ta-pic set-bg" data-setbg="img/property/details/sidebar/ta-1.jpg"></div>
-                                    <div class="ta-text">
-                                        <h6><a href="#">Ashton Kutcher</a></h6>
-                                        <span>Team Leader</span>
-                                        <div class="ta-num">123-455-688</div>
-                                    </div>
-                                </div>
-                                <div class="ta-item">
-                                    <div class="ta-pic set-bg" data-setbg="img/property/details/sidebar/ta-2.jpg"></div>
-                                    <div class="ta-text">
-                                        <h6><a href="#">Ashton Kutcher</a></h6>
-                                        <span>Team Leader</span>
-                                        <div class="ta-num">123-455-688</div>
-                                    </div>
-                                </div>
-                                <div class="ta-item">
-                                    <div class="ta-pic set-bg" data-setbg="img/property/details/sidebar/ta-3.jpg"></div>
-                                    <div class="ta-text">
-                                        <h6><a href="#">Ashton Kutcher</a></h6>
-                                        <span>Team Leader</span>
-                                        <div class="ta-num">123-455-688</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="single-sidebar slider-op">
                             <div class="section-title sidebar-title">
                                 <h5>Featural categories</h5>

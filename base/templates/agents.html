@@ -83,6 +83,9 @@
                                 {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                                 {% if current_user.is_authenticated%}
+ <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
+                            {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -102,7 +105,7 @@
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section spad set-bg" data-setbg="static/img/breadcrumb-bg.jpg">
+    <section class="breadcrumb-section spad set-bg" data-setbg="{{  url_for('static', filename= 'img/breadcrumb-bg.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -130,31 +133,7 @@
                                   </form>
                          <span id="datalist" ></span>
                         <script src="{{ url_for('static', filename='ajax.js') }}"></script>
-<script >
-    $(document).ready(function(){
-    $("#livebox").keyup(function(e){
-                text= $("#livebox").val();
-            console.log(text);
-
-               $.ajax({
-                method: "post",
-                url: '/search/agent',
-                data: {text: text},
-                success: function(res){
-
-                var data = "<ul>";
-                $.each(res,function(index,value){
-                if(value.first_name != -1 ){
-
-                data += '<li class="btn"><a  href="profile/'+value.first_name+'/'+value.last_name+'"><span >'+value.first_name+' '+value.last_name+'  </span> | <span class="text-muted"> '+value.email+'  '+value.phone_no+' </span></a> </li>';
-               }
-                });
-                data += "</ul>";
-                $("#datalist").html(data);
-            }
-          });
-          });
-          });
+<script src="{{ url_for('static', filename='agent_search.js') }}">
 
 </script>
                     </div>
@@ -198,6 +177,23 @@
 
                 </div>
                 {% endfor %}
+
+{% if agent.has_prev %}
+         <div class="col-lg-12">
+                    <div class="loadmore-btn">
+        <a class="btn btn-outline-info" href="{{ url_for('agent.profile',agent_first_name=agent.first_name, agent_last_name= agent.last_name, page=agent.prev_num) }}"> Newer </a>{% else %}
+
+            </div>
+        </div>
+                {% endif %}
+{% if agent.has_next %}
+         <div class="col-lg-12">
+                    <div class="loadmore-btn">
+        <a class="btn btn-outline-info" href="{{ url_for('agent.profile', agent_first_name=agent.first_name, agent_last_name= agent.last_name,  page=agent.next_num) }}"> Older </a>{% else %}
+
+            </div>
+        </div>
+                {% endif %}
             </div>
         </div>
     </section>

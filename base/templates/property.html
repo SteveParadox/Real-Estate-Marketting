@@ -83,6 +83,9 @@
                                 {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                                 {% if current_user.is_authenticated%}
+ <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
+                            {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -102,7 +105,7 @@
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section spad set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <section class="breadcrumb-section spad set-bg" data-setbg="{{  url_for('static', filename= 'img/breadcrumb-bg.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -110,7 +113,7 @@
                         <h4>Property Grid</h4>
                         <div class="bt-option">
                             <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
-                            <span>Property</span>
+                            <span>All Properties </span>
                         </div>
                     </div>
                 </div>
@@ -130,31 +133,7 @@
                                   </form>
                          <span id="datalist" ></span>
                         <script src="{{ url_for('static', filename='ajax.js') }}"></script>
-<script >
-    $(document).ready(function(){
-    $("#livebox").keyup(function(e){
-                text= $("#livebox").val();
-            console.log(text);
-
-               $.ajax({
-                method: "post",
-                url: '/search/apartment',
-                data: {text: text},
-                success: function(res){
-
-                var data = "<ul>";
-                $.each(res,function(index,value){
-                if(value.apartment_name != -1 ){
-
-                data += '<li class="btn"><a  href="/property/detail/'+value.public_id+'"><span >'+value.apartment_name+' '+value.city+'  </span> | <span class="text-muted"> '+value.location+'  '+value.neighbourhood+'  </span></a> </li>';
-               }
-                });
-                data += "</ul>";
-                $("#datalist").html(data);
-            }
-          });
-          });
-          });
+<script src="{{ url_for('static', filename='property_search.js') }}">
 
 </script>
                     </div>
@@ -177,7 +156,11 @@
                         </div>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-                            <div class="pt-price">{{apt.price}}</div>
+                            {% if apt.price_label == 'full sale' %}
+                                    <div class="pt-price">${{apt.price}}</div>
+                                    {% else %}
+                                   <div class="pt-price">${{apt.price}}<span>/{{apt.price_label}}</span></div>
+                                    {% endif %}
                             <h5><a href="{{ url_for('main.property_details', public_id=apt.public_id) }}">Home in {{apt.neighbourhood}}</a></h5>
                             <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.city}}, {{apt.country}}, {{apt.postal_code}}</p>
                             <ul>
@@ -191,7 +174,7 @@
                                     <div class="pa-info">
 
                                           <img alt="" src="   {{  url_for('static', filename= 'Apartment_pics/' + apt.broker.agent_image_file) }}">
-                                        <h6>{{apt.broker.first_name}} {{apt.broker.last_name}}</h6>
+                                        <h6><a  href="{{ url_for('agent.profile', agent_name=apt.broker.first_name, agent_last_name=apt.broker.last_name) }}">{{apt.broker.first_name}} {{apt.broker.last_name}}</a></h6>
                                     </div>
                                     <div class="pa-text">
                                         {{apt.broker.phone_no}}

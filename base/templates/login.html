@@ -82,7 +82,10 @@
                                  <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
                                 {%endif%}
                                 <li><a href="./blog.html">Blog</a></li>
-                                <li><a href="./contact.html">Contact</a></li>
+                                <li><a href="./contact.html">Contact</a></li> {% if current_user.is_authenticated%}
+ <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
+                            {% endif %}
+
                             </ul>
                         </nav>
                     </div>
@@ -107,10 +110,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <h4>Registration</h4>
+                        <h4>Sign In</h4>
                         <div class="bt-option">
                             <a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
-                            <span>Register</span>
+                            <span>Sign In</span>
                         </div>
                     </div>
                 </div>
@@ -118,6 +121,7 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
+
 
     <!-- Property Submit Section Begin -->
     <section class="property-submit-section spad">
@@ -131,14 +135,22 @@
                                  <div class="pf-title">
                                 <h4>Email Address</h4>
 
-                                {{ form.agent_email (type="email", placeholder="Email Address*")}}
+                                {{ form.agent_email (type="email/tel", placeholder="Email Address*")}}
                                      <br>
                                      <br>
                                      <h4>Password</h4>
 
-                                {{ form.agent_password (type="text", placeholder="Password*")}}
+                                {{ form.agent_password (type="password", placeholder="Password*")}}
 
+                                     <br>
+                                     <br>
+            <div class="form-check">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label(class="form-check-label") }}
+
+            </div>
                                  </div>
+
                              </fieldset>
                              {{ form.submit(class="site-btn")}}
                          </form>
