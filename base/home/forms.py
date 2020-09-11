@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import DataRequired, FileAllowed
-from wtforms import FileField, TextAreaField, PasswordField
+from wtforms import FileField, TextAreaField, PasswordField, BooleanField
 from wtforms.fields import SubmitField, StringField, DateField, IntegerField, RadioField, SelectField
-from wtforms.fields.html5 import URLField
+
 from wtforms.validators import EqualTo
 
+class SMForm(FlaskForm):
+    facebook= StringField('FaceBook username')
+    twitter= StringField('Twitter username')
+    submit = SubmitField('Add')
 
 class ApartmentForm(FlaskForm):
     apartment_name = StringField(validators=[DataRequired()])
@@ -17,10 +21,10 @@ class ApartmentForm(FlaskForm):
     property_status = SelectField(choices=[('for sale', "For Sale"), ("for rent", "For Rent")],
                                  validators=[DataRequired()])
     property_type = SelectField(
-        choices=[("apartment", 'Apartment'), ("house", "House"), ("office", "Office"), ("Store", "Store"),
-                 ("resturant", "resturant")], validators=[DataRequired()])
+        choices=[("apartment", 'Apartment'), ("house", "House"), ("office", "Office"), ("hotel", "Hotel"),
+                 ("store", "Store")], validators=[DataRequired()])
     year_built = DateField(validators=[DataRequired()])
-    video_tour = URLField()
+    video_data = FileField('Video tour guide', validators=[FileAllowed(['mp4', 'webm', 'hd'])])
     photo = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     photo1 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
     photo2 = FileField('', validators=[FileAllowed(['jpg', 'png']), DataRequired()])
@@ -40,8 +44,24 @@ class ApartmentForm(FlaskForm):
     area_size = IntegerField(validators=[DataRequired()])
     price = IntegerField(validators=[DataRequired()])
     second_price = IntegerField(validators=[DataRequired()])
-    price_label = SelectField(choices=[('month', "Monthly"), ("year", "Yearly"), ("full sale", "Sale")],
+    price_label = SelectField(choices=[("full sale", "Sale"),('month', "Monthly"), ("year", "Yearly")],
                                   validators=[DataRequired()])
+    air_conditioning=BooleanField('air_conditioning')
+    laundry = BooleanField('laundry')
+    refrigerator = BooleanField('refrigerator')
+    washer = BooleanField('washer')
+    balcony = BooleanField('balcony')
+    lawn = BooleanField('lawn')
+    sauna = BooleanField('sauna')
+    wifi = BooleanField('wifi')
+    dryer = BooleanField('dryer')
+    fireplace = BooleanField('fireplace')
+    swimming_pool = BooleanField('swimming_pool')
+    window_coverings = BooleanField('window_coverings')
+    gym = BooleanField('gym')
+    outdoor_shower = BooleanField('outdoor_shower')
+    tv_cable = BooleanField('tv_cable')
+    microwave = BooleanField('microwave')
     submit = SubmitField('Submit Property')
 
 
