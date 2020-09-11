@@ -1,7 +1,6 @@
 import datetime
 from flask import *
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_marshmallow import Marshmallow
@@ -26,7 +25,7 @@ REMEMBER_COOKIE_DURATION = datetime.timedelta(days=164, seconds=29156, microseco
 REMEMBER_COOKIE_REFRESH_EACH_REQUEST = False
 socketio = SocketIO()
 mail = Mail()
-jwt = JWTManager()
+
 
 
 def create_app(config_class=Config):
@@ -38,7 +37,6 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     mail.init_app(app)
     socketio.init_app(app)
-    jwt.init_app(app)
     migrate.init_app(app, db)
 
     from base.api.routes import api
