@@ -10,7 +10,7 @@ class Config:
 
         SQLALCHEMY_DATABASE_URI = 'postgres://xiwowberypopfh:164881e9c91553be395d82473917654c9083c308ec6400691e69cbbc669f6117@ec2-54-91-178-234.compute-1.amazonaws.com:5432/ddimctlrg827m2'
 
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = "xiwowberypopfhxiwowberypopfhgb87b77bg6vfugb6i87h89j0k3ijrufhygbu3n4ofinf"
     SECURITY_PASSWORD_SALT = 'my_precious_two'
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 465
