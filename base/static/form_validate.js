@@ -29,19 +29,7 @@ $(document).ready(function() {
             $("#phone_no").focus();
         return false;
       }
-    else
-      {
-        var con = confirm("Are you done?");
-        if(con == true)
-          {
-            alert("Welcome to our website");
-            return true;
-          }
-        else
-          {
-            return false;
-          }
-      }
+
   });
 
 });

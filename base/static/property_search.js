@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#livebox").keyup(function(e){
+    $("#cliq").on('click',function(e){
                 text= $("#livebox").val();
             console.log(text);
 
@@ -22,3 +22,5 @@ $(document).ready(function(){
           });
           });
           });
+
+

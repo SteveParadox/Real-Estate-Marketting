@@ -16,7 +16,7 @@
                 $.each(res,function(index,value){
                 if(value.name != -1 ){
 
-                data += ' <li style="display: block;"> <div class="pd-review"> <div class="pr-item"><div class="pr-avatar"><div class="pr-pic"><img alt="" src="{{ url_for('static', filename='img/property/details/review/review-1.jpg') }}"></div>  <div class="pr-text"><h6>'+value.first_name+'</h6><span > '+value.email+' </span><span > '+value.date_comment+' </span>  </div>  </div><span class="text-muted"> '+value.message+' </span>  </div> </li></a>';
+                data += ' <li style="display: block;"> <div class="pd-review"> <div class="pr-item"><div class="pr-avatar"><div class="pr-pic"><img alt="" src="{{ url_for("static", filename="img/property/details/review/review-1.jpg") }}"></div>  <div class="pr-text"><h6>'+value.first_name+'</h6><span > '+value.email+' </span><span > '+value.date_comment+' </span>  </div>  </div><span class="text-muted"> '+value.message+' </span>  </div> </li></a>';
                }
                 });
                 data += "</ul>";

@@ -1,17 +1,49 @@
 $(document).ready(function(){
-    $("#livebox,#livebox2,#livebox3, #livebox4").keyup(function(e){
-                text= $("#livebox").val();
-                 text2= $("#livebox2").val();
-                  text3= $("#livebox3").val();
-                  text4= $("#livebox4").val();
-            console.log(text);
+        var textx;
+        var texty;
+        var text4;
+
+        $("#livebox").keyup( function(e){
+             $("#livebox").val();
+
+ });
+
+    $(" #slider").on('input', function(e){
+             $('#slider_value').html( $(this).val() );
+
+ });
 
 
+
+$("#slider2").on('input', function(e){
+    $('#slider_value2').html( $(this).val() );
+ });
+
+
+      $("#select_val").change(function(){
+
+        text4 = $("#select_val option:selected").val();
+console.log(text4);
+
+
+    });
+
+
+
+    $("#cliq").on('click',function(e){
+                    text= $("#livebox").val();
+
+                  textx= $('#slider_value').html( );
+                   texty= $('#slider_value2').html( );
+                   console.log(textx);
+                    console.log(texty);
+                    console.log(text);
+                    console.log(text4);
 
                $.ajax({
                 method: "post",
                 url: '/search',
-                data: {text: text, text2:text2, text3:text3, text4:text4},
+                data: {text: text, textx:textx, texty:texty, text4:text4},
                 success: function(res){
 
                console.log(res);
@@ -24,9 +56,17 @@ $(document).ready(function(){
                 });
                 data += "</ul>";
                 $("#datalist").html(data);
+
+
                }
           });
-          });
+
+
 
   });
+  });
+
+
+
+
 
