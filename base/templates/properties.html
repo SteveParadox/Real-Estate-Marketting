@@ -1,10 +1,6 @@
 {%extends 'layout.html'%}
 {% block content%}
 
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
 
     <!-- Offcanvas Menu Wrapper Begin -->
     <div class="offcanvas-menu-overlay"></div>
@@ -13,10 +9,9 @@
             <span class="icon_close"></span>
         </div>
         <div class="logo">
-            <a href="./index.html">
+            <a  href="{{ url_for('main.home') }}">
 
-                 <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
-
+                 <h2>Souia</h2>
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -24,85 +19,12 @@
 
                <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
         </div>
-        <div class="om-social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-youtube-play"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-        </div>
+
     </div>
     <!-- Offcanvas Menu Wrapper End -->
 
-    <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="hs-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <div class="logo">
-                            <a  href="{{ url_for('main.home') }}"> <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-10">
-                        <div class="ht-widget">
 
-                              <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="canvas-open">
-                    <span class="icon_menu"></span>
-                </div>
-            </div>
-        </div>
-        <div class="hs-nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <nav class="nav-menu">
-                            {% if current_user.is_authenticated%}
 
-                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
-                            {% endif %}
-                            <ul>
-                                <li><a  href="{{ url_for('main.home') }}">Home</a></li>
-                                <li class="active"><a href="#">Properties</a>
-                                    <ul class="dropdown">
-                           <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
-
-                                              <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
-                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
-                                    </ul>
-                                </li>
-                                  <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
-                           {% if not current_user.is_authenticated%}
-                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
-                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
-                                {%endif%}
-                                <li><a href="./blog.html">Blog</a></li>
-                                <li><a href="./contact.html">Contact</a></li>
-                                 {% if current_user.is_authenticated%}
- <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
-                            {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="hn-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header End -->
- {% for apt in apartment.items%}
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section spad set-bg" data-setbg="{{  url_for('static', filename= 'img/breadcrumb-bg.jpg') }}">
         <div class="container">
@@ -113,7 +35,9 @@
                         <div class="bt-option">
                             <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
                             <a  href="{{ url_for('main.property_list') }}">Property</a>
-                        <span> {{apt.property_type}}</span>
+
+                            <span>{{ property_type }}</span>
+
                         </div>
                     </div>
                 </div>
@@ -123,6 +47,7 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Property Section Begin -->
+
     <section class="property-section spad">
         <div class="container">
             <div class="row">
@@ -132,16 +57,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
 
+            <div class="row">
+ {% for apt in apartment.items%}
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}">
                             <div class="label">{{apt.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-
+                         <a class="cas">{{apt.love}} love this</a>
                              {% if apt.price_label == 'full sale' %}
                             <div class="pt-price">$ {{apt.price}}</div>
                                     {% else %}
@@ -149,7 +74,7 @@
                                     {% endif %}
 
 
-                            <h5> <a  href="{{ url_for('main.property_details', public_id=apt.public_id) }}">Home in {{apt.neighbourhood}}</a></h5>
+                            <h5> <a  href="{{ url_for('main.property_details', public_id=apt.public_id) }}"><span style="text-transform: capitalize;">{{apt.property_type[0]}}</span>{{apt.property_type[1:]}} in {{apt.neighbourhood}}</a></h5>
                             <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.city}}, {{apt.country}}, {{apt.postal_code}}</p>
                             <ul>
                                 <li><i class="fa fa-object-group"></i> {{apt.area_size}}</li>

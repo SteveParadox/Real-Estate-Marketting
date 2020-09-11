@@ -31,3 +31,25 @@ img {
 
         <p><input type=submit value=Next></p>
 </form>
+
+
+
+
+
+    data = request.form.get('text')
+    data2 = request.form.get('text2')
+    data3 = request.form.get('text3')
+    data4 = request.form.get('text4')
+    output=[]
+    search = Apartment.query.all()
+    for das in search:
+        das_data={}
+        das_data['city']=das.city
+        das_data['postal_code'] = das.postal_code
+        das_data['no_of_bedrooms'] = das.no_of_bedrooms
+        das_data['no_of_bathrooms'] = das.no_of_bathrooms
+        if data in das.city:
+            output.append(das_data)
+
+
+    return jsonify(output)

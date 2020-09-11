@@ -15,7 +15,7 @@
         <div class="logo">
            <a  href="{{ url_for('main.home') }}">
 
-                  <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
+                   <h2>Souia</h2>
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -23,87 +23,11 @@
 
                <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
         </div>
-        <div class="om-social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-youtube-play"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-        </div>
+
     </div>
     <!-- Offcanvas Menu Wrapper End -->
 
-    <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="hs-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <div class="logo">
-                            <a  href="{{ url_for('main.home') }}">
-                             <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-10">
-                        <div class="ht-widget">
 
-                             <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="canvas-open">
-                    <span class="icon_menu"></span>
-                </div>
-            </div>
-        </div>
-        <div class="hs-nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <nav class="nav-menu">
-                            {% if current_user.is_authenticated%}
-
-                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
-                            {% endif %}
-                            <ul>
-                                <li><a  href="{{ url_for('main.home') }}">Home</a></li>
-                                <li class="active"><a href="#">Properties</a>
-                                    <ul class="dropdown">
-                                        <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
-
-                                               <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
-                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
-                                    </ul>
-                                </li>
-                                    <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
-                             {% if not current_user.is_authenticated%}
-                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
-                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
-
-                                {%endif%}
-                                <li><a href="./blog.html">Blog</a></li>
-                                <li><a href="./contact.html">Contact</a></li>
-                                 {% if current_user.is_authenticated%}
- <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
-                            {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="hn-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section spad set-bg" data-setbg=" {{ url_for('static', filename='img/breadcrumb-bg.jpg') }}" >
@@ -135,120 +59,285 @@
                                 <tr>
                                     <th class="type">Type</th>
                                     <th class="compare-item middle-item">
-                                        <div class="title">Villa</div>
+                                        <div class="title">{{apartment.property_type}}</div>
 
-                                    <img alt="" src="{{ url_for('static', filename='img/property/comparison/comparison-1.jpg') }}">
-                                        <div>Unimont Aurum</div>
-                                        <p><span class="icon_pin_alt"></span> Badlapur East, Beyond Thane</p>
+                                    <img alt="" src="{{ url_for('static', filename= 'Apartment_pics/' + apartment.image_file) }}">
+                                        <div>{{apartment.apartment_name}}</div>
+                                        <p><span class="icon_pin_alt"></span> {{apartment.location}}, {{apartment.neighbourhood}}, {{apartment.postal_code}}, {{apartment.city}} {{apartment.country}}</p>
                                     </th>
                                     <th class="compare-item right-item">
-                                        <div class="title">Apartment</div>
-            <img alt="" src="{{ url_for('static', filename='img/property/comparison/comparison-2.jpg') }}">
-                                        <div>GoldCrest Residency</div>
-                                        <p><span class="icon_pin_alt"></span> 12 Pt at Shedung, Panvel, Raigarh, Navi Mumbai</p>
+                                        <div class="title">{{apt.property_type}}</div>
+            <img alt="" src="{{ url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}">
+                                        <div>{{apt.apartment_name}}</div>
+                                        <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.neighbourhood}}, {{apt.postal_code}}, {{apt.city}} {{apt.country}}</p>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td class="p-type">Status</td>
-                                    <td>Rent</td>
-                                    <td>Rent</td>
+                                    <td>{{apartment.property_status}}</td>
+                                    <td>{{apt.property_status}}</td>
                                 </tr>
                                 <tr>
                                     <td class="p-type">Size</td>
-                                    <td>520 sq ft</td>
-                                    <td>450 sq ft</td>
+                                    <td>{{apartment.area_size}} {{apartment.size_prefix}}</td>
+                                    <td>{{apt.area_size}} {{apt.size_prefix}}</td>
                                 </tr>
                                 <tr>
                                     <td class="p-type">Rooms</td>
-                                    <td>8</td>
-                                    <td>5</td>
+                                    <td>{{apartment.no_of_bedrooms}}</td>
+                                    <td>{{apt.no_of_bedrooms}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-type">Bedroom</td>
-                                    <td>5</td>
-                                    <td>5</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Garages</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Air conditioning</td>
-                                    <td>1</td>
-                                    <td>1</td>
+                                    <td class="p-type">Bathrooms</td>
+                                    <td>{{apartment.no_of_bathrooms}}</td>
+                                    <td>{{apt.no_of_bathrooms}}</td>
                                 </tr>
                                 <tr>
                                     <td class="p-type">Garages</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    <td>{{apartment.no_of_garages}}</td>
+                                    <td>{{apt.no_of_garages}}</td>
                                 </tr>
+                                <tr>
+                                    <td class="p-type">Price</td>
+                                    {% if apartment.price_label == 'full sale' %}
+                                    <td>${{apartment.price}} </td>
+                                    {% else %}
+                                    <td>${{apartment.price}}<span>/{{apartment.price_label}}</span></td>
+                                    {% endif %}
+                                    {% if apt.price_label == 'full sale'%}
+                                    <td>${{apt.price}} </td>
+
+                                    {% else %}
+                                    <td>${{apt.price}} <span>/{{apt.price_label}}</span></td>
+                                    {% endif %}
+                                </tr>
+
                                 <tr>
                                     <td class="p-type">Air conditioning</td>
+                                    {% if apartment.air_conditioning == True%}
                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Garages</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Air conditioning</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Balcony</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
                                     <td class="icon-close"><span class="icon_close_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Built-in kitchen</td>
+
+                                    {% endif %}
+                                    {% if apt.air_conditioning == True %}
                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Dryer</td>
+                                    {%else%}
                                     <td class="icon-close"><span class="icon_close_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+
+                                    {% endif %}
                                 </tr>
                                 <tr>
-                                    <td class="p-type">Fireplace</td>
+                                    <td class="p-type">Laundry</td>
+                                    {% if apartment.laundry == True %}
                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Fully furnished</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Gym</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Heating</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-type">Pool</td>
-                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
                                     <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.laundry == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                                 <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
                                 </tr>
                                 <tr>
-                                    <td class="p-type">Storage</td>
-                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    <td class="p-type">Refrigerator</td>
+                                    {% if apartment.refrigerator == True %}
                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.refrigerator == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
                                 </tr>
                                 <tr>
                                     <td class="p-type">Washer</td>
-                                    <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    {% if apartment.washer == True %}
                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.washer == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Balcony</td>
+                                    {% if apartment.barbecue == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.barbecue == True %}
+                                     <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Lawn</td>
+                                    {% if apartment.lawn==True%}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.lawn == True%}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Dryer</td>
+                                    {%if apartment.dryer == True%}
+                                   <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                      {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.dryer == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Fireplace</td>
+                                    {% if apartment.villa == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.villa == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Swimming pool</td>
+                                    {% if apartment.swimming_pool == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                                 <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.swimming_pool == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Gym</td>
+                                    {% if apartment.gym == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.gym == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Outdoor Shower</td>
+                                    {%if apartment.outdoor_shower ==True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.outdoor_shower == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Window Coverings</td>
+                                    {% if apartment.window_coverings == True%}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.window_coverings == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                      {%else%}
+
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Tv Cable</td>
+                                    {% if apartment.tv_cable == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                   {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.tv_cable == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td class="p-type">Wifi</td>
+                                    {% if apartment.wifi == True%}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                 {%else%}
+                                   <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.wifi == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                </tr>
+                            <tr>
+                                    <td class="p-type">Sauna</td>
+                                    {% if apartment.sauna == True%}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                 {%else%}
+                                   <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
+                                    {% if apt.sauna == True %}
+                                    <td class="icon-check"><span class="icon_check_alt2"></span></td>
+                                    {%else%}
+                              <td class="icon-close"><span class="icon_close_alt2"></span></td>
+
+                                    {% endif %}
                                 </tr>
                             </tbody>
                         </table>

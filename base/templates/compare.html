@@ -30,10 +30,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <h4>Property Grid</h4>
+                        <h4>Property Compare</h4>
                         <div class="bt-option">
                             <a  href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Home</a>
-                            <span>All Properties </span>
+                            <span>Properties in location </span>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,10 @@
                  <div class="col-lg-6">
                     <div class="agent-search-form">
                         <form action="#">
-                            <input type="text" id="livebox" placeholder="Find property by name, city, neighborhood, location, property type, property status, no of rooms, no of bathrooms, no of garages, postal code ">
+                            <input type="text" id="livebox" placeholder="Find property to compare by name, city, neighborhood, location, property type, property status, postal code ">
                                   </form>
-            <main class="main">
+
+                        <main class="main">
   <div class="container">
                     <button id="cliq" type="button" class="open-modal" data-open="modal-signup">Search</button>
 
@@ -69,22 +70,59 @@
   </div>
 </main>
                 <script src="{{ url_for('static', filename='ajax.js') }}"></script>
-<script src="{{ url_for('static', filename='property_search.js') }}"></script>
+
                 <script src="{{ url_for('static', filename='modal_design.js') }}"></script>
 
 
-                    </div>
+                        <script>
+                            $(document).ready(function(){
+
+
+                            $("#cliq").on('click',function(e){
+                text= $("#livebox").val();
+
+
+               $.ajax({
+                method: "get",
+                url: '/compare/{{apartment_name}}',
+
+                success: function(rest){
+                console.log(rest.apartment_name);
+                var das= rest.apartment_name;
+                  $.ajax({
+                method: "post",
+                url: '/property/compare/{{apartment_name}}/search',
+                data: {text: text},
+                success: function(res){
+
+                var data = "<ul>";
+                $.each(res,function(index,value){
+                if(value.apartment_name != -1 ){
+
+                data += '<li class="btn"><a  href="/property/compare/'+das+'/with/'+value.apartment_name+'"><span >'+value.apartment_name+' '+value.city+'  </span> | <span class="text-muted"> '+value.location+'  '+value.neighbourhood+'  </span></a> </li>';
+               }
+                });
+                data += "</ul>";
+                $("#datalist").html(data);
+            }
+          });
+                }
+                });
+    });
+
+                            });
+                        </script>                   </div>
                 </div>
 
 
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h4>PROPERTY Grid</h4>
+                        <h4>PROPERTY COmpare</h4>
                     </div>
                 </div>
             </div>
             <div class="row">
-                {% for apt in apartment.items%}
+                {% for apt in apartment%}
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg=" {{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}
@@ -92,8 +130,8 @@
                             <div class="label">{{apt.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                           <a class="cas">{{apt.love}} love this</a>
-                            {% if apt.price_label == 'full sale' %}
+                             <a  href="{{ url_for('main.property_compare', apartment_name=apartment_name, apt_name=apt.apartment_name) }}" style="float:right;" ><button class="btn btn-outline-info">Compare With</button></a>
+                                 {% if apt.price_label == 'full sale' %}
                                     <div class="pt-price">${{apt.price}}</div>
                                     {% else %}
                                    <div class="pt-price">${{apt.price}}<span>/{{apt.price_label}}</span></div>
@@ -125,22 +163,6 @@
 
 
 
-{% if apartment.has_prev %}
-         <div class="col-lg-12">
-                    <div class="loadmore-btn">
-        <a class="btn btn-outline-info" href="{{ url_for('main.property_list', page=apartment.prev_num) }}"> Newer </a>{% else %}
-
-            </div>
-        </div>
-                {% endif %}
-{% if apartment.has_next %}
-         <div class="col-lg-12">
-                    <div class="loadmore-btn">
-        <a class="btn btn-outline-info" href="{{ url_for('main.property_list', page=apartment.next_num) }}"> Older </a>{% else %}
-
-            </div>
-        </div>
-                {% endif %}
             </div>
         </div>
     </section>

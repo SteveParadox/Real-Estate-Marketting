@@ -1,10 +1,63 @@
 {%extends 'layout.html'%}
 {% block content%}
 
+<style>
+    input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+
+</style>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+
+            <h4 >Welcome! </h4>
+
+
+      </div>
+      <div class="modal-body">
+          <span style="font-size: 12px;"> Please enter your social media user handle to enable potential clients reach you quickly.
+       </span>
+
+              <form action="" style="margin-top: 1rem;" method="post">
+                  <label for="facebook">Facebook Username
+        {{form.facebook(class="btn-inline")}}
+                  </label>
+          <br>
+                  <label for="twitter">Twitter Username
+          {{ form.twitter }}
+                  </label>
+                  <br>
+          {{ form.submit(class="btn btn-outline-info") }}
+              </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
     <!-- Offcanvas Menu Wrapper Begin -->
     <div class="offcanvas-menu-overlay"></div>
@@ -13,8 +66,8 @@
             <span class="icon_close"></span>
         </div>
         <div class="logo">
-            <a href="./index.html">
-                 <img alt="" src="{{ url_for('static', filename='img/logo.png') }}">
+            <a  href="{{ url_for('main.home') }}">
+                 <h2>Souia</h2>
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -32,80 +85,11 @@
     </div>
     <!-- Offcanvas Menu Wrapper End -->
 
-    <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="hs-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <div class="logo">
-                            <a class="hw-btn"  href="{{ url_for('main.home') }}"> <img alt="" src="{{ url_for('static', filename='img/logo.png') }}"></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-10">
-                        <div class="ht-widget">
-
-                               <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="canvas-open">
-                    <span class="icon_menu"></span>
-                </div>
-            </div>
-        </div>
-        <div class="hs-nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <nav class="nav-menu">
-                            {% if current_user.is_authenticated%}
-
-                                <h6>{{current_user.first_name}} {{current_user.last_name}}</h6>
-                            {% endif %}
-                            <ul>
-                                <li class="active"> <a class="hw-btn"  href="{{ url_for('main.home') }}">Home</a></li>
-                                <li><a href="#">Properties</a>
-                                    <ul class="dropdown">
-
-                           <li><a  href="{{ url_for('main.property_list') }}">Property Grid</a></li>
-
-                                              <li><a  href="{{ url_for('main.property_comparison') }}">Property Comperison</a></li>
-                                        <li><a  href="{{ url_for('main.property_submit') }}">Property Submit</a></li>
-                               </ul>
-                                </li>
-
-                                   <li><a  href="{{ url_for('agent.agents') }}">Owners/Agents</a></li>
-                              {% if not current_user.is_authenticated%}
-                                <li><a  href="{{ url_for('agent.register') }}">Register as an Owner/Agent</a></li>
-                                 <li><a  href="{{ url_for('agent.login') }}">Login <i class="fa fa-user"></i></a></li>
-
-                                {%endif%}
-                                <li><a href="./blog.html">Blog</a></li>
-                                <li><a href="./contact.html">Contact</a></li>
- {% if current_user.is_authenticated%}
- <li><a  href="{{ url_for('agent.logout') }}">Logout</a></li>
-                            {% endif %}
-                            </ul>
-
-                        </nav>
-
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="hn-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header End -->
-
+<style>
+    .dek{
+    float: right;
+    }
+</style>
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="container">
@@ -160,7 +144,7 @@
                     <div class="change-btn">
                         <div class="cb-item">
                             <label for="cb-rent" class="active">
-                                Fill to Search
+                                Quick Search Properties
                                 <input type="radio" id="cb-rent">
                             </label>
                         </div>
@@ -168,126 +152,76 @@
                     </div>
                 </div>
             </div>
+
             <div class="search-form-content">
-                <form action="#" class="filter-form">
-                   <input type="text" id="livebox" placeholder="city">
-<input type="text" id="livebox4" placeholder="location">
+                <form action="/search" method="post" class="filter-form">
 
-                        {{form.property_status(class="sm-width")}}
+                    <input class="btn btn-outline-info" type="text" id="livebox" placeholder="city">
 
-                   {{form.property_type(class="sm-width")}}
-                    <input type="text" id="livebox2" placeholder="no of bedrooms">
-                    <input type="text" id="livebox3" placeholder="no of bathrooms">
-                    <div class="room-size-range-wrap sm-width">
-                        <div class="price-text">
-                            <label for="roomsizeRange">Size:</label>
-                            <input type="text" id="roomsizeRange" readonly>
-                        </div>
-                        <div id="roomsize-range" class="slider"></div>
-                    </div>
-                    <div class="price-range-wrap sm-width">
-                        <div class="price-text">
-                            <label for="priceRange">Price:</label>
-                            <input type="text" id="priceRange" readonly>
-                        </div>
-                        <div id="price-range" class="slider"></div>
-                    </div>
-                    <button type="button" class="search-btn sm-width">Search</button>
+
+                         <select id="select_val" >
+                        <option value="house">House</option>
+                    <option value="apartment">Apartment</option>
+                             <option value="office">Office</option>
+                             <option value="hotel">Hotel</option>
+                    <option value="store">Store</option>
+                    </select>
+                    <br>
+                    <br>
+                        <section  id="facet-price-range-slider" >
+
+                            <input  type="range" id="slider" name="range-1"  value="10" min="0.0" max="1000000" step="1000" />
+
+
+                             <input  type="range" id="slider2" name="range-2"  value="10" min="0.0" max="5000000" step="1000" />
+
+
+</section>
+<div style="display:none;" class="slider"> $<span id="slider_value"></span></div >
+               <div style="display:none;"  class="slider"> $<span id="slider_value2"></span></div >
                 </form>
-                <span id="datalist" ></span>
-            </div>
-            <div class="more-option">
-                <div class="accordion" id="accordionExample">
-                    <div class="card">
-                        <div class="card-heading active">
-                            <a data-toggle="collapse" data-target="#collapseOne">
-                                More Search Options
-                            </a>
-                        </div>
-                        <div id="collapseOne" class="collapse" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <div class="mo-list">
-                                    <div class="ml-column">
-                                        <label for="air">Air conditioning
-                                            <input type="checkbox" id="air">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="lundry">Laundry
-                                            <input type="checkbox" id="lundry">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="refrigerator">Refrigerator
-                                            <input type="checkbox" id="refrigerator">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="washer">Washer
-                                            <input type="checkbox" id="washer">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div class="ml-column">
-                                        <label for="barbeque">Barbeque
-                                            <input type="checkbox" id="barbeque">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="lawn">Lawn
-                                            <input type="checkbox" id="lawn">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="sauna">Sauna
-                                            <input type="checkbox" id="sauna">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="wifi">Wifi
-                                            <input type="checkbox" id="wifi">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div class="ml-column">
-                                        <label for="dryer">Dryer
-                                            <input type="checkbox" id="dryer">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="microwave">Microwave
-                                            <input type="checkbox" id="microwave">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="pool">Swimming Pool
-                                            <input type="checkbox" id="pool">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="window">Window Coverings
-                                            <input type="checkbox" id="window">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div class="ml-column last-column">
-                                        <label for="gym">Gym
-                                            <input type="checkbox" id="gym">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="shower">OutdoorShower
-                                            <input type="checkbox" id="shower">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                        <label for="tv">Tv Cable
-                                            <input type="checkbox" id="tv">
-                                            <span class="checkbox"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <main class="main">
+  <div class="container">
+                    <button id="cliq" type="button" class="open-modal" data-open="modal-signup">Search</button>
+
+    <div class="modal" id="modal-signup">
+      <div class="modal-dialog">
+        <div style="cursor: pointer;" class="modal-header">
+
+          <button  type="button" class="close-modal" data-close><i class="fa fa-window-close"></i></button>
+        </div>
+        <div class="modal-content">
+          <span id="datalist" ></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+                <script src="{{ url_for('static', filename='ajax.js') }}"></script>
+<script src="{{ url_for('static', filename='search.js') }}"></script>
+
+                <script src="{{ url_for('static', filename='modal_design.js') }}"></script>
+<script>
+    $(document).ready(function(){
+     $("#select_val").change(function(){
+
+        text4 = $("#select_val option:selected").val();
+console.log(text4);
+
+
+    });
+  });
+
+
+</script>
+
             </div>
         </div>
     </section>
     <!-- Search Section End -->
-<script src="{{ url_for('static', filename='ajax.js') }}"></script>
-<script src="{{ url_for('static', filename='search.js') }}" >
 
-</script>
+
 
 
 
@@ -308,58 +242,16 @@
                             <li data-filter=".house">House</li>
                             <li data-filter=".office">Office</li>
                             <li data-filter=".hotel">Hotel</li>
-                            <li data-filter=".restaurent">Restaurent</li>
+                            <li data-filter=".restaurent">Store</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row property-filter">
-                  {% for lat in latest %}
-                <div class="col-lg-4 col-md-6 mix all ">
-                    <div class="property-item">
-
-                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}" >
 
 
-                            <div class="label c-red">{{lat.property_status}}</div>
-                        </div>
-                        <div class="pi-text">
-                            {% if lat.love < 2%}
-                            <span >{{lat.love}} love this</span>
-                            {% else %}
-                            <span >{{lat.love}} loves this</span>
-                            {% endif %}
 
-                             {% if lat.price_label == 'full sale' %}
-                                    <div class="pt-price">${{lat.price}}</div>
-                                    {% else %}
-                                   <div class="pt-price">${{lat.price}}<span>/{{lat.price_label}}</span></div>
-                                    {% endif %}
 
-                            <h5><a  href="{{ url_for('main.property_details', public_id=lat.public_id) }}">{{lat.apartment_name}}</a></h5>
-                            <p><span class="icon_pin_alt"></span> {{lat.location}}, {{lat.city}} {{lat.country}}</p>
-                            <ul>
-                                <li><i class="fa fa-object-group"></i>{{lat.area_size}}</li>
-                                <li><i class="fa fa-bathtub"></i> {{lat.no_of_bathrooms}}</li>
-                                <li><i class="fa fa-bed"></i> {{lat.no_of_bedrooms}}</li>
-                                <li><i class="fa fa-automobile"></i> {{lat.no_of_garages}}</li>
-                            </ul>
-                            <div class="pi-agent">
-                                <div class="pa-item">
-                                    <div class="pa-info">
-                                        <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
-                                        <h6><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h6>
-                                    </div>
-                                    <div class="pa-text">
-                                        {{lat.broker.phone_no}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
- {%endfor%}
                 {%for lat in latest_apt%}
                 <div class="col-lg-4 col-md-6 mix apart">
                     <div class="property-item">
@@ -369,7 +261,8 @@
                             <div class="label">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+
+                            <a class="cas">{{lat.love}} love this</a>
                             {% if lat.price_label == 'full sale' %}
                                     <div class="pt-price">${{lat.price}}</div>
                                     {% else %}
@@ -412,7 +305,7 @@
                             <div class="label">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <a class="cas">{{lat.love}} love this</a>
                             {% if lat.price_label == 'full sale' %}
                                     <div class="pt-price">${{lat.price}}</div>
                                     {% else %}
@@ -454,7 +347,7 @@
                             <div class="label c-red">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                           <a class="cas">{{lat.love}} love this</a>
                             {% if lat.price_label == 'full sale' %}
                                     <div class="pt-price">${{lat.price}}</div>
                                     {% else %}
@@ -485,15 +378,15 @@
                     </div>
                 </div>
                 {% endfor %}
-                {%for lat in latest.rest%}
-                <div class="col-lg-4 col-md-6 mix  restaruent">
+                {%for lat in latest_rest%}
+                <div class="col-lg-4 col-md-6 mix  restaurent">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
                             <div class="label c-magenta">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-                           {% if lat.price_label == 'full sale' %}
+                            <a class="cas">{{lat.love}} love this</a>
+                            {% if lat.price_label == 'full sale' %}
                                     <div class="pt-price">${{lat.price}}</div>
                                     {% else %}
                                    <div class="pt-price">${{lat.price}}<span>/{{lat.price_label}}</span></div>
@@ -522,7 +415,7 @@
                 </div>
                 {% endfor %}
 
-                {%for lat in latest.store%}
+                {%for lat in latest_store%}
                 <div class="col-lg-4 col-md-6 mix   hotel">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
@@ -531,7 +424,7 @@
 <div class="label c-magenta">{{lat.property_status}}</div>
                         </div>
                         <div class="pi-text">
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <a class="cas">{{lat.love}} love this</a>
                             {% if lat.price_label == 'full sale' %}
                                     <div class="pt-price">${{lat.price}}</div>
                                     {% else %}
@@ -576,14 +469,14 @@
                 <div class="col-lg-4 p-0">
                     <div class="feature-property-left">
                         <div class="section-title">
-                            <h4>Feature PROPERTY</h4>
+                            <h4>Featured Properties</h4>
                         </div>
                         <ul>
                             <li>Apartment</li>
                             <li>House</li>
                             <li>Office</li>
-                            <li>Store</li>
-                            <li>Restaurant</li>
+                            <li>Hotel</li>
+                             <li>Store</li>
                         </ul>
                         <a href="{{ url_for('main.property_list') }}">View all properties</a>
                     </div>
@@ -593,7 +486,7 @@
                     <div class="fp-slider owl-carousel">
                         <div class="fp-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + rand_apt.image_file2) }}">
                             <div class="fp-text">
-                                <h5 class="title">Home in {{rand_apt.neighbourhood}}</h5>
+                                <h5 class="title"><span style="text-transform: capitalize;">{{rand_apt.property_type[0]}}</span>{{rand_apt.property_type[1:]}} in {{rand_apt.neighbourhood}}</h5>
                                 <p><span class="icon_pin_alt"></span>{{rand_apt.location}}, {{rand_apt.city}}, {{rand_apt.country}} {{rand_apt.postal_code}}</p>
                                 <div class="label">{{rand_apt.property_status}}</div>
 
@@ -613,7 +506,7 @@
                         </div>
                         <div class="fp-item set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + rand_apt2.image_file2) }}">
                             <div class="fp-text">
-                                <h5 class="title">Home in {{rand_apt2.neighbourhood}}</h5>
+                                <h5 class="title"><span style="text-transform: capitalize;">{{rand_apt2.property_type[0]}}</span>{{rand_apt2.property_type[1:]}} in {{rand_apt2.neighbourhood}}</h5>
                                 <p><span class="icon_pin_alt"></span> {{rand_apt2.location}}, {{rand_apt2.city}}, {{rand_apt2.country}} {{rand_apt2.postal_code}}</p>
                                 <div class="label">{{rand_apt2.property_status}}</div>
                                 {% if rand_apt2.price_label == 'full sale' %}
@@ -649,14 +542,14 @@
 
             </div>
             <div class="row">
-                {% for lat in latest %}
+                {% for lat in agent %}
                 <div class="col-md-4">
                     <div class="ts-item">
                         <div class="ts-text">
 
-                              <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.broker.agent_image_file) }}">
-                            <h5><a  href="{{ url_for('agent.profile', agent_name=lat.broker.first_name, agent_last_name=lat.broker.last_name) }}">{{lat.broker.first_name}} {{lat.broker.last_name}}</a></h5>
-                            <span>{{lat.broker.phone_no}}</span>
+                              <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.agent_image_file) }}">
+                            <h5><a  href="{{ url_for('agent.profile', agent_name=lat.first_name, agent_last_name=lat.last_name) }}">{{lat.first_name}} {{lat.last_name}}</a></h5>
+                            <span>{{lat.phone_no}}</span>
                              <div class="ts-social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -694,13 +587,13 @@
             </div>
             <div class="cs-item set-bg" data-setbg="static/img/categories/cat-4.jpg">
                 <div class="cs-text">
-                    <a href="{{ url_for('main.type', property_type='resturant') }}">Restaurant</a>
+                    <a href="{{ url_for('main.type', property_type='resturant') }}">Store</a>
                     <span>{{resturant.total}} </span>
                 </div>
             </div>
             <div class="cs-item set-bg" data-setbg="static/img/categories/cat-5.jpg">
                 <div class="cs-text">
-                   <a href="{{ url_for('main.type', property_type='store') }}">Store</a>
+                   <a href="{{ url_for('main.type', property_type='store') }}">Hotel</a>
                     <span>{{store.total}} </span>
                 </div>
             </div>

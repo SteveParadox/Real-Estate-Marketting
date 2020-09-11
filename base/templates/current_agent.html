@@ -1,0 +1,153 @@
+{%extends 'layout.html'%}
+{% block content%}
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Wrapper Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <span class="icon_close"></span>
+        </div>
+        <div class="logo">
+            <a  href="{{ url_for('main.home') }}">
+
+
+                <h2>Souia</h2>
+            </a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="om-widget">
+
+              <a class="hw-btn"  href="{{ url_for('main.property_submit') }}">Submit property</a>
+        </div>
+
+    </div>
+    <!-- Offcanvas Menu Wrapper End -->
+
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section spad set-bg" data-setbg="{{  url_for('static', filename= 'img/breadcrumb-bg.jpg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h4>Profile</h4>
+                        <div class="bt-option">
+                            <a  href="{{ url_for('main.home') }}">
+
+               <i class="fa fa-home"></i> Home</a>
+                             <a  href="{{ url_for('agent.agents') }}">Agents</a>
+                            <span>{{current_user.first_name}} {{current_user.last_name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Profile Section Begin -->
+    <section class="profile-section spad">
+        <div class="container">
+            <div class="profile-agent-content">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="profile-agent-info">
+                            <div class="pi-pic">
+
+                                <img src="{{  url_for('static', filename= 'Apartment_pics/' + agent.agent_image_file) }}">
+
+                            </div>
+                            <div class="pi-text">
+                                <h5>{{agent.first_name}} {{agent.last_name}}</h5>
+                                <span>From {{agent.country}}</span>
+                                <p><span>Since</span> {{agent.date_registered.strftime('%B %Y ')}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="profile-agent-widget">
+                            <ul>
+                                <li>Properties <span>{{apartment.total}}</span></li>
+                                <li>Email <span>{{agent.email}}</span></li>
+                                <li>Phone <span>{{agent.phone_no}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Profile Section End -->
+
+    <!-- Property Section Begin -->
+    <section class="property-section profile-page spad">
+        <div class="container">
+            <div class="row">
+                {%for apt in apartment.items%}
+                <div class="col-lg-4">
+
+                    <div class="property-item">
+                        <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + apt.image_file) }}">
+                            <div class="label">{{apt.property_status}}</div>
+                        </div>
+                         <div class="pd-title">
+                             <a href="{{ url_for('agent.delete_agent_apt', agent_name= current_user.first_name, agent_last_name=current_user.last_name, apartment_public_id=apt.public_id) }}" class="trash-icon"> <button class="btn btn-outline-info"><span style="color: red;" class="icon_trash_alt"></span> Delete Property</button></a>
+                         </div>
+                        <div class="pi-text">
+
+                            {% if apt.love < 2%}
+                            <span >{{apt.love}} love this</span>
+                            {% else %}
+                            <span >{{apt.love}} loves this</span>
+                            {% endif %}
+
+                               {% if apt.price_label == 'full sale' %}
+                                   <div class="pt-price">$ {{apt.price}}</div>
+                                    {% else %}
+                                    <div class="pt-price">$ {{apt.price}}<span>/{{apt.price_label}}</span></div>
+                                    {% endif %}
+                            <h5><a href="{{ url_for('main.property_details', public_id=apt.public_id) }}"><span style="text-transform: capitalize;">{{apt.property_type[0]}}</span>{{apt.property_type[1:]}} in {{apt.neighbourhood}}</a></h5>
+                            <p><span class="icon_pin_alt"></span> {{apt.location}}, {{apt.city}}, {{apt.country}} {{apt.postal_code}}</p>
+                            <ul>
+                                <li><i class="fa fa-object-group"></i> {{apt.area_size}}</li>
+                                <li><i class="fa fa-bathtub"></i> {{apt.no_of_bathrooms}}</li>
+                                <li><i class="fa fa-bed"></i> {{apt.no_of_bedrooms}}</li>
+                                <li><i class="fa fa-automobile"></i> {{apt.no_of_garages}}</li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+ {%endfor%}
+
+{% if apartment.has_prev %}
+         <div class="col-lg-12">
+                    <div class="loadmore-btn">
+        <a class="btn btn-outline-info" href="{{ url_for('agent.profile', agent_name=agent.first_name, agent_last_name=agent.last_name, page=apartment.prev_num) }}"> Newer </a>{% else %}
+
+            </div>
+        </div>
+                {% endif %}
+{% if apartment.has_next %}
+         <div class="col-lg-12">
+                    <div class="loadmore-btn">
+        <a class="btn btn-outline-info" href="{{ url_for('agent.profile', agent_name=agent.first_name, agent_last_name=agent.last_name, page=apartment.next_num) }}"> Older </a>{% else %}
+
+            </div>
+        </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- Property Section End -->
+
+{% endblock content%}
+
