@@ -1,3 +1,6 @@
+import os
+
+
 from flask import *
 from flask_login import current_user, login_user, login_required, logout_user
 
@@ -12,7 +15,8 @@ agent = Blueprint('agent', __name__)
 @agent.route('/agents')
 def agents():
     page = request.args.get('page', 1, type=int)
-    agent = Agent.query.paginate(page=page, per_page=1)
+    agent = Agent.query.paginate(page=page, per_page=100)
+
     return render_template('agents.html', agent=agent)
 
 
@@ -36,6 +40,39 @@ def profile(agent_name, agent_last_name):
     apartment = Apartment.query.filter_by(agent=agent.id).order_by(Apartment.date_uploaded.desc()).paginate(page=page,
                                                                                                             per_page=10)
     return render_template('profile.html', agent=agent, apartment=apartment)
+
+@agent.route('/agent/<string:agent_name>/<string:agent_last_name>')
+@login_required
+def agent_apt(agent_name, agent_last_name):
+
+    page = request.args.get('page', 1, type=int)
+    agent = Agent.query.filter_by(first_name=agent_name).filter_by(last_name=agent_last_name).first()
+    if agent.first_name is not current_user.first_name:
+        abort(403)
+    apartment = Apartment.query.filter_by(broker=current_user).order_by(Apartment.date_uploaded.desc()).paginate(page=page,
+                                                                                                            per_page=10)
+    return render_template('current_agent.html', agent=agent, apartment=apartment)
+
+
+
+@agent.route('/agent/<string:agent_name>/<string:agent_last_name>/delete/<string:apartment_public_id>')
+def delete_agent_apt(agent_name, agent_last_name, apartment_public_id):
+    apartment = Apartment.query.filter_by(broker=current_user).filter_by(public_id=apartment_public_id).first()
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file0}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file2}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file3}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file4}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file5}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file6}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file7}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file8}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.image_file9}")
+    os.remove(f"{os.path.abspath('base/static/Apartment_pics')}/{apartment.video_tour}")
+
+    db.session.delete(apartment)
+    db.session.commit()
+    return redirect(url_for('agent.agent_apt', agent_name= current_user.first_name, agent_last_name=current_user.last_name))
 
 
 @agent.route('/register', methods=['GET', 'POST'])
@@ -72,6 +109,7 @@ def login():
 
         if user and bcrypt.check_password_hash(user.password, form.agent_password.data):
             login_user(user, remember=form.remember.data)
+
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
