@@ -42,9 +42,12 @@ class Agent(db.Model, UserMixin):
     agent_photo_data = db.Column(db.LargeBinary)
     amount_earned = db.Column(db.Integer(), default=0)
     buildings_sold = db.Column(db.Integer(), default=0)
-    # location = db.Column(db.String(), nullable=False)
+    location = db.Column(db.String())
     client = db.relationship('Client', backref='real_estate', lazy=True)
     apartment = db.relationship('Apartment', backref='broker', lazy=True)
+    facebook_name = db.Column(db.String())
+    twitter_name = db.Column(db.String())
+
 
 
 class Apartment(db.Model):
@@ -76,6 +79,7 @@ class Apartment(db.Model):
     no_of_garages = db.Column(db.Integer, nullable=False, default=0)
     year_built = db.Column(db.String, nullable=False)
     video_tour = db.Column(db.String)
+    video_data = db.Column(db.LargeBinary)
     image_file = db.Column(db.String(20), nullable=False)
     photo_data = db.Column(db.LargeBinary)
     image_file2 = db.Column(db.String(20), nullable=False)
@@ -104,6 +108,22 @@ class Apartment(db.Model):
     size_prefix = db.Column(db.String(), default="sqft")
     date_uploaded = db.Column(db.DateTime, nullable=False, default=datetime.now)
     cleared = db.Column(db.Boolean, default=False)
+    air_conditioning = db.Column(db.Boolean, default=False)
+    laundry = db.Column(db.Boolean, default=False)
+    refrigerator = db.Column(db.Boolean, default=False)
+    washer = db.Column(db.Boolean, default=False)
+    barbecue = db.Column(db.Boolean, default=False) # change to balcony
+    lawn = db.Column(db.Boolean, default=False)
+    sauna = db.Column(db.Boolean, default=False)
+    wifi = db.Column(db.Boolean, default=False)
+    dryer = db.Column(db.Boolean, default=False)
+    microwave = db.Column(db.Boolean, default=False)
+    swimming_pool = db.Column(db.Boolean, default=False)
+    window_coverings = db.Column(db.Boolean, default=False)
+    gym = db.Column(db.Boolean, default=False)
+    outdoor_shower = db.Column(db.Boolean, default=False)
+    tv_cable = db.Column(db.Boolean, default=False)
+    villa = db.Column(db.Boolean, default=False) # change to fireplace
 
 
 class Client(db.Model):
@@ -147,6 +167,7 @@ class AgentSchema(ModelSchema):
 
 agent_schema = AgentSchema()
 agents_schema = AgentSchema(many=True)
+
 
 class ReviewSchema(ModelSchema):
     class Meta:
