@@ -5,28 +5,16 @@ from wtforms.fields import SubmitField, StringField, DateField, IntegerField, Ra
 from wtforms.fields.html5 import URLField
 from wtforms.validators import EqualTo, ValidationError, Email, Length
 
-import pycountry
 
 from base.models import Agent
 
-
-def lst():
-
-
-    index=[]
-    d = {}
-
-    for index, value in enumerate(pycountry.countries):
-        d[index] = value
-
-    return d[index].name
 
 
 class RegForm(FlaskForm):
     agent_first_name = StringField(validators=[DataRequired()])
     agent_last_name = StringField(validators=[DataRequired()])
 
-    country = SelectField(choices=lst())
+
     agent_password = PasswordField(validators=[DataRequired()])
     confirm_password = PasswordField('Confirm password',
                                      validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
