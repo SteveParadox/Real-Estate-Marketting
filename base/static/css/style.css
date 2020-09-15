@@ -1,11 +1,11 @@
 @charset "UTF-8";
 /******************************************************************
 Theme Name: Aler
-Description: 
-Author: 
-Author URI: 
+Description:
+Author:
+Author URI:
 Version: 1.0
-Created: 
+Created:
 ******************************************************************/
 /*------------------------------------------------------------------
 [Table of contents]
@@ -274,6 +274,7 @@ ol {
   padding: 22px 0;
 }
 .hs-top .logo a {
+padding-left: 37%;
   display: inline-block;
 }
 .hs-top .ht-widget {
@@ -314,6 +315,7 @@ ol {
   content: "|";
 }
 .hs-top .ht-widget .hw-btn {
+border-radius: 50px;
   font-size: 14px;
   color: #ffffff;
   font-weight: 700;
@@ -566,7 +568,7 @@ ol {
 }
 
 .search-form-content {
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 26px;
 }
 .search-form-content .filter-form {
@@ -574,40 +576,6 @@ ol {
 }
 .search-form-content .filter-form .sm-width {
   width: calc(33.33% - 20px);
-}
-.search-form-content .filter-form .nice-select {
-  clear: none;
-  margin-right: 20px;
-  height: 46px;
-  background: #ffffff;
-  border-radius: 0;
-  border: 1px solid #e1e1e1;
-  line-height: 43px;
-  margin-bottom: 20px;
-}
-.search-form-content .filter-form .nice-select:after {
-  border-bottom: 1px solid #666666;
-  border-right: 1px solid #666666;
-  height: 6px;
-  right: 16px;
-  margin-top: -6px;
-  width: 6px;
-  top: 54%;
-}
-.search-form-content .filter-form .nice-select span {
-  font-size: 13px;
-  color: #666666;
-  font-weight: 500;
-}
-.search-form-content .filter-form .nice-select.open .list {
-  opacity: 1;
-  pointer-events: auto;
-  -webkit-transform: scale(1) translateY(0);
-  -ms-transform: scale(1) translateY(0);
-  transform: scale(1) translateY(0);
-  width: 100%;
-  border-radius: 0;
-  margin-top: 0;
 }
 .search-form-content .filter-form .price-range-wrap {
   float: left;
@@ -668,25 +636,8 @@ ol {
   font-weight: 600;
 }
 
-.ui-widget.ui-widget-content {
-  background: #e1e1e1;
-  height: 7px;
-  border: none;
-}
 
-.ui-slider .ui-slider-range {
-  background: #00C89E;
-}
 
-.ui-slider-horizontal .ui-slider-handle {
-  width: 13px;
-  height: 13px;
-  background: #00C89E;
-  border-radius: 50%;
-  border: none;
-  margin-left: 0;
-  top: -3px;
-}
 
 .more-option .card {
   border: none;
@@ -902,6 +853,7 @@ ol {
   border-radius: 50%;
   display: inline-block;
   margin-right: 10px;
+  object-fit: cover;
 }
 .property-item .pi-text .pi-agent .pa-item .pa-info h6 {
   font-size: 14px;
@@ -1840,6 +1792,7 @@ ol {
   height: 200px;
   width: 200px;
   border-radius: 50%;
+  object-fit: cover;
 }
 .pd-text .pd-widget .pd-agent .agent-text {
   overflow: hidden;
@@ -2603,6 +2556,8 @@ li .richText-btn[data-command=toggleCode] {
 }
 .as-item .as-pic img {
   border-radius: 50%;
+  object-fit: cover;
+height: 100%;
 }
 .as-item .as-pic .rating-point {
   font-size: 16px;
@@ -2699,6 +2654,8 @@ li .richText-btn[data-command=toggleCode] {
 }
 .profile-agent-content .profile-agent-info .pi-pic img {
   border-radius: 50%;
+  object-fit: cover;
+height: 100%;
 }
 .profile-agent-content .profile-agent-info .pi-pic .rating-point {
   font-size: 14px;
@@ -3420,6 +3377,7 @@ li .richText-btn[data-command=toggleCode] {
   .ts-item .ts-text img {
     height: 160px;
     width: 160px;
+    object-fit: cover;
   }
 
   .ts-item {
@@ -3629,7 +3587,7 @@ li .richText-btn[data-command=toggleCode] {
     font-weight: 600;
   }
   .offcanvas-menu-wrapper .logo {
-    margin-bottom: 40px;
+    margin-bottom: 0;
   }
   .offcanvas-menu-wrapper .logo a {
     display: inline-block;
@@ -4089,7 +4047,7 @@ li .richText-btn[data-command=toggleCode] {
     font-weight: 600;
   }
   .offcanvas-menu-wrapper .logo {
-    margin-bottom: 40px;
+    margin-bottom: 0;
   }
   .offcanvas-menu-wrapper .logo a {
     display: inline-block;
@@ -4303,3 +4261,105 @@ li .richText-btn[data-command=toggleCode] {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+  background: none;
+}
+
+
+.b {
+  font-weight: 100;
+  text-align: center;
+  display: inline-block;
+  background-color: #00CEAF;
+  color: #fff;
+  padding: 30px;
+  border-radius: 3px;
+  min-width: 200px;
+  transition: all .3s;
+  font-size: 30px;
+}
+.b:hover {
+  background-color: #00b599;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-state-active {
+  border-color: #00CEAF;
+  border-width: 3px;
+  height: 1.2em;
+  width: 1.2em;
+  background-color: #00CEAF  ;
+}
+.ui-state-hover:hover,
+.ui-widget-content .ui-state-hover:hover,
+.ui-widget-header .ui-state-hover:hover,
+.ui-state-focus:hover,
+.ui-widget-content .ui-state-focus:hover,
+.ui-widget-header .ui-state-focus:hover,
+.ui-state-active:hover,
+.ui-state-hover:focus,
+.ui-widget-content .ui-state-hover:focus,
+.ui-widget-header .ui-state-hover:focus,
+.ui-state-focus:focus,
+.ui-widget-content .ui-state-focus:focus,
+.ui-widget-header .ui-state-focus:focus,
+.ui-state-active:focus,
+.ui-state-hover:active,
+.ui-widget-content .ui-state-hover:active,
+.ui-widget-header .ui-state-hover:active,
+.ui-state-focus:active,
+.ui-widget-content .ui-state-focus:active,
+.ui-widget-header .ui-state-focus:active,
+.ui-state-active:active {
+  background-color: #00CEAF;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+  border-color: #a3a3a3;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #a3a3a3;
+  outline: 0;
+}
+.ui-state-default:hover,
+.ui-widget-content .ui-state-default:hover,
+.ui-widget-header .ui-state-default:hover,
+.ui-state-default:focus,
+.ui-widget-content .ui-state-default:focus,
+.ui-widget-header .ui-state-default:focus,
+.ui-state-default:active,
+.ui-widget-content .ui-state-default:active,
+.ui-widget-header .ui-state-default:active {
+  outline: 0;
+  background-color: #00CEAF;
+  border-color: #00CEAF;
+}
+.ui-state-default:hover,
+.ui-widget-content .ui-state-default:hover,
+.ui-widget-header .ui-state-default:hover {
+  background-color: #fff;
+}
+.ui-state-default:hover:active,
+.ui-widget-content .ui-state-default:hover:active,
+.ui-widget-header .ui-state-default:hover:active {
+  background-color: #00CEAF;
+}
+
+  .slider-box {width: 90%; margin: 25px auto}
+label, input {border: none; display: inline-block;
+margin-right: -4px; vertical-align: top; width: 30%}
+input {width: 70%}
+.slider {margin: 25px 0}
