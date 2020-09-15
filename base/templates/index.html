@@ -163,12 +163,12 @@ input[type=submit]:hover {
                         <option value="house">House</option>
                     <option value="apartment">Apartment</option>
                              <option value="office">Office</option>
-                             <option value="hotel">Hotel</option>
+                             <option value="condo">Condo</option>
                     <option value="store">Store</option>
                     </select>
                     <br>
                     <br>
-                        <section  id="facet-price-range-slider" >
+<section  id="facet-price-range-slider" >
 
                             <input  type="range" id="slider" name="range-1"  value="10" min="0.0" max="1000000" step="1000" />
 
@@ -179,8 +179,7 @@ input[type=submit]:hover {
 </section>
 <div style="display:none;" class="slider"> $<span id="slider_value"></span></div >
                <div style="display:none;"  class="slider"> $<span id="slider_value2"></span></div >
-                </form>
-                    <main class="main">
+                </form>                    <main class="main">
   <div class="container">
                     <button id="cliq" type="button" class="open-modal" data-open="modal-signup">Search</button>
 
@@ -241,7 +240,7 @@ console.log(text4);
                             <li data-filter=".apart">Apartment</li>
                             <li data-filter=".house">House</li>
                             <li data-filter=".office">Office</li>
-                            <li data-filter=".hotel">Hotel</li>
+                            <li data-filter=".hotel">Condo</li>
                             <li data-filter=".restaurent">Store</li>
                         </ul>
                     </div>
@@ -378,7 +377,7 @@ console.log(text4);
                     </div>
                 </div>
                 {% endfor %}
-                {%for lat in latest_rest%}
+                {%for lat in latest_store%}
                 <div class="col-lg-4 col-md-6 mix  restaurent">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
@@ -415,7 +414,7 @@ console.log(text4);
                 </div>
                 {% endfor %}
 
-                {%for lat in latest_store%}
+                {%for lat in latest_rest%}
                 <div class="col-lg-4 col-md-6 mix   hotel">
                     <div class="property-item">
                         <div class="pi-pic set-bg" data-setbg="{{  url_for('static', filename= 'Apartment_pics/' + lat.image_file) }}">
@@ -475,7 +474,7 @@ console.log(text4);
                             <li>Apartment</li>
                             <li>House</li>
                             <li>Office</li>
-                            <li>Hotel</li>
+                            <li>Condo</li>
                              <li>Store</li>
                         </ul>
                         <a href="{{ url_for('main.property_list') }}">View all properties</a>
@@ -531,37 +530,7 @@ console.log(text4);
     <!-- Feature Property Section End -->
 
     <!-- Team Section Begin -->
-    <section class="team-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-8">
-                    <div class="section-title">
-                        <h6>Agents/Owners in your location</h6>
-                    </div>
-                </div>
 
-            </div>
-            <div class="row">
-                {% for lat in agent %}
-                <div class="col-md-4">
-                    <div class="ts-item">
-                        <div class="ts-text">
-
-                              <img alt="" src="{{  url_for('static', filename= 'Apartment_pics/' + lat.agent_image_file) }}">
-                            <h5><a  href="{{ url_for('agent.profile', agent_name=lat.first_name, agent_last_name=lat.last_name) }}">{{lat.first_name}} {{lat.last_name}}</a></h5>
-                            <span>{{lat.phone_no}}</span>
-                             <div class="ts-social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-envelope-o"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {%endfor%}
-            </div>
-        </div>
-    </section>
     <!-- Team Section End -->
 
     <!-- Categories Section Begin -->
@@ -587,14 +556,14 @@ console.log(text4);
             </div>
             <div class="cs-item set-bg" data-setbg="static/img/categories/cat-4.jpg">
                 <div class="cs-text">
-                    <a href="{{ url_for('main.type', property_type='resturant') }}">Store</a>
-                    <span>{{resturant.total}} </span>
+                    <a href="{{ url_for('main.type', property_type='store') }}">Store</a>
+                    <span>{{store.total}} </span>
                 </div>
             </div>
             <div class="cs-item set-bg" data-setbg="static/img/categories/cat-5.jpg">
                 <div class="cs-text">
-                   <a href="{{ url_for('main.type', property_type='store') }}">Hotel</a>
-                    <span>{{store.total}} </span>
+                   <a href="{{ url_for('main.type', property_type='condo') }}">Condo</a>
+                    <span>{{condo.total}} </span>
                 </div>
             </div>
         </div>
