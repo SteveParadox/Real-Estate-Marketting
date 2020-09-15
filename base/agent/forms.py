@@ -13,6 +13,7 @@ from base.models import Agent
 class RegForm(FlaskForm):
     agent_first_name = StringField(validators=[DataRequired()])
     agent_last_name = StringField(validators=[DataRequired()])
+    country = SelectField()
 
 
     agent_password = PasswordField(validators=[DataRequired()])
