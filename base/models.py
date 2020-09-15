@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import Serializer
 from marshmallow_sqlalchemy import ModelSchema
-from base import db, login_manager
+from base import db, login_manager, app
 
 
 @login_manager.user_loader
@@ -47,6 +48,24 @@ class Agent(db.Model, UserMixin):
     apartment = db.relationship('Apartment', backref='broker', lazy=True)
     facebook_name = db.Column(db.String())
     twitter_name = db.Column(db.String())
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'agent_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            agent_id = s.loads(token)['agent_id']
+        except ValueError:
+            return None
+        return Agent.query.get(agent_id)
+
+    def __repr__(self):
+        return f"User('{self.first_name}', '{self.email}', '{self.confirmed}')"
+
 
 
 

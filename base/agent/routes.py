@@ -5,12 +5,35 @@ from flask import *
 from flask_login import current_user, login_user, login_required, logout_user
 
 from base import db, bcrypt
-from base.agent.forms import RegForm, LoginForm
+from base.agent.email import send_email
+from base.agent.forms import RegForm, LoginForm, RequestResetForm, ResetPasswordForm
+from base.agent.token import generate_confirmation_token, confirm_token
+from base.agent.util import send_reset_email
 from base.home.utils import save_img
 from base.models import Agent, Apartment, AgentSchema
 
 agent = Blueprint('agent', __name__)
 
+
+
+
+
+@agent.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    agent= Agent.query.filter_by(email=email).first_or_404()
+    if agent.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        agent.confirmed = True
+        db.session.add(agent)
+        db.session.commit()
+        flash('Your account has been confirmed. Thanks!', 'success')
+    return redirect(url_for('main.home'))
 
 @agent.route('/agents')
 def agents():
@@ -92,10 +115,76 @@ def register():
         agent.phone_no = form.agent_phone_no.data
         agent.agent_image_file = photo_file4
         agent.agent_photo_data = file4.read()
+        agent.confirmed = False
         db.session.add(agent)
         db.session.commit()
-        return redirect(url_for('agent.login'))
+        token = generate_confirmation_token(agent.email)
+        confirm_url = url_for('agent.confirm_email', token=token, _external=True)
+        html = render_template('confirm_url.html', confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        send_email(agent.email, subject, html)
+
+        login_user(agent)
+
+        flash('A confirmation email has been sent via email.', 'success')
+        # flash('Your account has been created! Log in', 'success')
+
+        return redirect(url_for("agent.unconfirmed"))
+
     return render_template('register.html', form=form, title="Register")
+
+
+
+@agent.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        agent =Agent.query.filter_by(email=form.email.data).first()
+        send_reset_email(agent)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('agent.login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@agent.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    agent= Agent.verify_reset_token(token)
+    if agent is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('agent.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        agent.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('agent.login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+
+@agent.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect(url_for('main.home'))
+    return render_template('unconfirmed.html', title='Unconfirmed')
+
+
+@agent.route('/resend')
+@login_required
+def resend_confirmation():
+    token = generate_confirmation_token(current_user.email)
+    confirm_url = url_for('agent.confirm_email', token=token, _external=True)
+    html = render_template('confirm_url.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    send_email(current_user.email, subject, html)
+    flash('A new confirmation email has been sent.', 'success')
+    return redirect(url_for('agent.unconfirmed'))
 
 
 @agent.route('/login', methods=['GET', 'POST'])

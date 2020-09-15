@@ -21,7 +21,7 @@ class ApartmentForm(FlaskForm):
     property_status = SelectField(choices=[('for sale', "For Sale"), ("for rent", "For Rent")],
                                  validators=[DataRequired()])
     property_type = SelectField(
-        choices=[("apartment", 'Apartment'), ("house", "House"), ("office", "Office"), ("hotel", "Hotel"),
+        choices=[("apartment", 'Apartment'), ("house", "House"), ("office", "Office"), ("condo", "Condominium"),
                  ("store", "Store")], validators=[DataRequired()])
     year_built = DateField(validators=[DataRequired()])
     video_data = FileField('Video tour guide', validators=[FileAllowed(['mp4', 'webm', 'hd'])])

@@ -73,9 +73,9 @@ def home():
     office = (
         Apartment.query.filter(Apartment.property_type == 'office').paginate())
     store = (
-        Apartment.query.filter(Apartment.property_type == 'Store').paginate())
-    resturant = (
         Apartment.query.filter(Apartment.property_type == 'store').paginate())
+    condo = (
+        Apartment.query.filter(Apartment.property_type == 'condo').paginate())
 
     apartment = (Apartment.query.all()[:10])
     x = random.shuffle(apartment)
@@ -92,10 +92,10 @@ def home():
         Apartment.query.filter(Apartment.property_type == 'house').order_by(Apartment.date_uploaded.desc()).all()[
         :10])
     latest_store = (
-        Apartment.query.filter(Apartment.property_type == 'Store').order_by(Apartment.date_uploaded.desc()).all()[
+        Apartment.query.filter(Apartment.property_type == 'store').order_by(Apartment.date_uploaded.desc()).all()[
         :10])
     latest_rest = (
-        Apartment.query.filter(Apartment.property_type == 'store').order_by(Apartment.date_uploaded.desc()).all()[
+        Apartment.query.filter(Apartment.property_type == 'condo').order_by(Apartment.date_uploaded.desc()).all()[
         :10])
     rand_apt = Apartment.query.all()
     rand_apt2 = Apartment.query.all()
@@ -125,7 +125,7 @@ def home():
                            latest_house=latest_house, latest_office=latest_office,
                            latest_rest=latest_rest, latest_store=latest_store,
                            form=form, apt=apt, rand_apt=rand_apt, rand_apt2=rand_apt2, office=office, store=store,
-                           resturant=resturant, house=house, agent=agent)
+                           condo=condo, house=house, agent=agent)
 
 
 @main.route('/about')
